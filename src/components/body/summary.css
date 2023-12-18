@@ -1,0 +1,33 @@
+.summary-box {
+  /* border: 1px solid #333; */
+  padding: 20px;
+  flex: 1;
+  margin-right: 100px;
+  margin-bottom: 20px; /* 박스 아래 여백을 추가합니다. */
+  box-sizing: border-box; /* 박스 크기가 border와 padding을 포함하도록 설정합니다. */
+  max-height: 50vh; /* 화면 높이의 절반까지만 요약 박스가 채워지도록 설정합니다. */
+}
+
+.checkbox-box {
+  max-width: 40%; /* 체크박스 박스의 최대 너비를 100%로 설정하여 절반까지 차지하도록 합니다. */
+}
+
+.summary-content {
+  
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start; /* 요약 박스와 차트를 상단 정렬로 배치합니다. */
+  gap: 20px; /* 요약 박스와 차트 사이의 간격을 조절합니다. */
+}
+
+.total {
+  font-weight: bold;
+  float: right; /* 결과를 오른쪽에 위치시키기 위해 */
+}
+
+
+.result {
+  font-weight: bold;
+  font-size: 18px; /* 원하는 크기로 조절하세요 */
+  float: right; /* 결과를 오른쪽에 위치시키기 위해 */
+}
