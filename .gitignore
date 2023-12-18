@@ -5,7 +5,7 @@
 /.pnp
 .pnp.js
 app.config.js
-index.css
+#index.css
 # testing
 /coverage
 
