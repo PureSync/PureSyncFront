@@ -48,7 +48,6 @@ const BodyMenu = () => {
         if (access_token === "") return;
         Axios.get(process.env.REACT_APP_HOST_URL + '/api/menu/list', {
             params: {
-                mem_seq: memSeq,
                 menu_date: selectDate,
             }, 
             withCredentials: false,
@@ -104,7 +103,6 @@ const BodyMenu = () => {
     const menuDelete = (menu_seq) => {
         if (access_token === "") return;
         Axios.post(process.env.REACT_APP_HOST_URL + '/api/menu/delete', {
-            memSeq: memSeq,
             menuSeq: menu_seq
         }, 
         {
@@ -131,7 +129,6 @@ const BodyMenu = () => {
         if (access_token === "") return;
         Axios.get(process.env.REACT_APP_HOST_URL + '/api/exercise/list', {
             params: {
-                mem_seq: memSeq,
                 el_date: selectDate,
             }, 
             withCredentials: false, 
@@ -162,7 +159,6 @@ const BodyMenu = () => {
         if (access_token === "") return;
         Axios.post(process.env.REACT_APP_HOST_URL + '/api/exercise/delete', {
             elSeq: el_seq,
-            memSeq: memSeq,
         }, 
         {
             withCredentials: true, // Include credentials (cookies)
@@ -190,7 +186,6 @@ const BodyMenu = () => {
         if (access_token === "") return;
         Axios.get(process.env.REACT_APP_HOST_URL + '/api/summary/list', {
             params: {
-                mem_seq: memSeq,
                 menu_date: selectDate,
                 el_date: selectDate,
             }, 

@@ -1,104 +1,110 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {
     Input,
     Avatar,
     Upload,
     Button,
-    Select,
-    Switcher,
     Notification,
     toast,
     FormContainer,
 } from 'components/ui'
+import { useSelector, useDispatch } from 'react-redux'
+import { apiPutSettingData } from 'services/AccountServices'
 import FormDesription from './FormDesription'
 import FormRow from './FormRow'
 import { Field, Form, Formik } from 'formik'
 import { components } from 'react-select'
-import {
-    HiOutlineUserCircle,
-    HiOutlineMail,
-    HiOutlineBriefcase,
-    HiOutlineUser,
-    HiCheck,
-    HiOutlineGlobeAlt,
-} from 'react-icons/hi'
+import { HiOutlineUser } from 'react-icons/hi'
 import * as Yup from 'yup'
+import { setUser } from 'store/auth/userSlice'
+import { AWS_IMG_PATH } from 'constants/app.constant'
 
 const { Control } = components
 
 const validationSchema = Yup.object().shape({
-    name: Yup.string()
-        .min(3, 'Too Short!')
-        .max(12, 'Too Long!')
-        .required('User Name Required'),
-    email: Yup.string().email('Invalid email').required('Email Required'),
-    title: Yup.string(),
-    avatar: Yup.string(),
-    lang: Yup.string(),
-    timeZone: Yup.string(),
-    syncData: Yup.bool(),
+    nickname: Yup.string()
+        .min(2, '2글자 이상 입력해주세요.')
+        .max(21, '20자 이내로 입력해주세요.')
+        .required('닉네임은 필수입력 항목입니다.'),
 })
 
-const langOptions = [
-    { value: 'en', label: 'English (US)', imgPath: '/img/countries/us.png' },
-    { value: 'ch', label: '中文', imgPath: '/img/countries/cn.png' },
-    { value: 'jp', label: '日本语', imgPath: '/img/countries/jp.png' },
-    { value: 'fr', label: 'French', imgPath: '/img/countries/fr.png' },
-]
 
-const CustomSelectOption = ({ innerProps, label, data, isSelected }) => {
-    return (
-        <div
-            className={`flex items-center justify-between p-2 ${
-                isSelected
-                    ? 'bg-gray-100 dark:bg-gray-500'
-                    : 'hover:bg-gray-50 dark:hover:bg-gray-600'
-            }`}
-            {...innerProps}
-        >
-            <div className="flex items-center">
-                <Avatar shape="circle" size={20} src={data.imgPath} />
-                <span className="ml-2 rtl:mr-2">{label}</span>
-            </div>
-            {isSelected && <HiCheck className="text-emerald-500 text-xl" />}
-        </div>
+const Profile = ({ data, onDataUpdate }) => {
+    const dispatch = useDispatch()
+
+    const { avatar, userName, authority, email, nickName } = useSelector(
+        (state) => state.auth.user
     )
-}
 
-const CustomControl = ({ children, ...props }) => {
-    const selected = props.getValue()[0]
-    return (
-        <Control {...props}>
-            {selected && (
-                <Avatar
-                    className="ltr:ml-4 rtl:mr-4"
-                    shape="circle"
-                    size={18}
-                    src={selected.imgPath}
-                />
-            )}
-            {children}
-        </Control>
-    )
-}
+    const [previewImage, setPreviewImage] = useState('');
 
-const Profile = ({ data }) => {
-    const onSetFormFile = (form, field, file) => {
-        form.setFieldValue(field.name, URL.createObjectURL(file[0]))
+    const onSetFormFile = (form, field, files) => {
+        const file = files[0];
+
+        // Blob만 처리하도록 추가 확인
+        if (file instanceof File) {
+            console.log(1);
+            form.setFieldValue(field.name, file);
+
+            // 미리보기 이미지를 업데이트
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                setPreviewImage(e.target.result);
+                console.log(previewImage);
+            };
+            reader.readAsDataURL(file); // await를 사용하여 비동기적으로 실행
+        } else {
+            console.error('Invalid file type:', file);
+        }
     }
 
-    const onFormSubmit = (values, setSubmitting) => {
+    const beforeUpload = (files) => {
+        let valid = true
 
-        console.log('val', values)
-        toast.push(<Notification title={'Profile updated'} type="success" />, {
-            placement: 'top-center',
-        })
-        setSubmitting(false)
+        const allowedFileType = ['image/jpeg', 'image/png', 'image/gif']
+        const maxFileSize = 500000
+
+        for (let file of files) {
+            console.log(file);
+            if (!allowedFileType.includes(file.type)) {
+                valid = 'jpeg/png/gif 파일만 업로드 가능합니다.'
+            }
+            if (file.size >= maxFileSize) {
+                valid = '500kb미만의 파일만 업로드 가능합니다.'
+            }
+        }
+
+        return valid
+    }
+
+
+
+    const onFormSubmit = async (values, setSubmitting) => {
+        const formData = new FormData();
+        formData.append('memberInfo', new Blob([JSON.stringify({
+            memNick: values.nickname
+        })], { type: 'application/json' }));
+        formData.append('file', values.avatar);
+
+        const response = await apiPutSettingData(formData)
+        if (response.data.code == 200) {
+            dispatch(setUser({nickName : response.data.data.result.memNick, avatar: response.data.data.result.memImg}))
+            onDataUpdate(response.data.data.result);
+            toast.push(<Notification title={'수정이 완료되었습니다.'} type="success" />, { placement: 'top-center' });
+            setSubmitting(false);
+            return;
+        }
+        
+        toast.push(<Notification title={'알 수 없는 이유로 수정에 실패했습니다.'} type="danger" />, { placement: 'top-center' });
+        return;
     }
 
     return (
         <Formik
-            initialValues={data}
+            initialValues={{
+                nickname : data.memNick || nickName,
+                avatar : data.memImg || ''
+            }}
             enableReinitialize
             validationSchema={validationSchema}
             onSubmit={(values, { setSubmitting }) => {
@@ -108,57 +114,25 @@ const Profile = ({ data }) => {
                 }, 1000)
             }}
         >
-            {({ values, touched, errors, isSubmitting, resetForm }) => {
+            {({ values, touched, errors, isSubmitting, dirty  }) => {
                 const validatorProps = { touched, errors }
                 return (
                     <Form>
                         <FormContainer>
                             <FormDesription
-                                title="General"
-                                desc="Basic info, like your name and address that will displayed in public"
+                                title="기본정보"
+                                desc="회원님의 기본정보 입니다."
                             />
                             <FormRow
-                                name="name"
-                                label="Name"
-                                {...validatorProps}
-                            >
-                                <Field
-                                    type="text"
-                                    autoComplete="off"
-                                    name="name"
-                                    placeholder="Name"
-                                    component={Input}
-                                    prefix={
-                                        <HiOutlineUserCircle className="text-xl" />
-                                    }
-                                />
-                            </FormRow>
-                            <FormRow
-                                name="email"
-                                label="Email"
-                                {...validatorProps}
-                            >
-                                <Field
-                                    type="email"
-                                    autoComplete="off"
-                                    name="email"
-                                    placeholder="Email"
-                                    component={Input}
-                                    prefix={
-                                        <HiOutlineMail className="text-xl" />
-                                    }
-                                />
-                            </FormRow>
-                            <FormRow
                                 name="avatar"
-                                label="Avatar"
+                                label="프로필 이미지"
                                 {...validatorProps}
                             >
                                 <Field name="avatar">
                                     {({ field, form }) => {
-                                        const avatarProps = field.value
-                                            ? { src: field.value }
-                                            : {}
+                                        const avatarProps = avatar || field.value
+                                        ? { src: `${AWS_IMG_PATH}${avatar}` || `${field.value}`}
+                                        : {};
                                         return (
                                             <Upload
                                                 className="cursor-pointer"
@@ -178,110 +152,83 @@ const Profile = ({ data }) => {
                                                 }
                                                 showList={false}
                                                 uploadLimit={1}
+                                                beforeUpload={beforeUpload}
                                             >
-                                                <Avatar
-                                                    className="border-2 border-white dark:border-gray-800 shadow-lg"
-                                                    size={60}
-                                                    shape="circle"
-                                                    icon={<HiOutlineUser />}
-                                                    {...avatarProps}
-                                                />
+                                                {previewImage !== '' ? (
+                                                    <Avatar
+                                                        className="border-2 border-white dark:border-gray-800 shadow-lg"
+                                                        size={100}
+                                                        shape="circle"
+                                                        src={previewImage}
+                                                        alt="프로필 이미지"
+                                                        {...avatarProps}
+                                                    />
+                                                ) : (
+                                                    <Avatar
+                                                        className="border-2 border-white dark:border-gray-800 shadow-lg"
+                                                        size={100}
+                                                        shape="circle"
+                                                        icon={<HiOutlineUser />}
+                                                        {...avatarProps}
+                                                    />
+                                                )}
                                             </Upload>
                                         )
                                     }}
                                 </Field>
                             </FormRow>
                             <FormRow
-                                name="title"
-                                label="Title"
+                                name="name"
+                                label="아이디"
                                 {...validatorProps}
-                                border={false}
+                            >
+                                {data.memId}
+                            </FormRow>
+                            <FormRow
+                                name="nickname"
+                                label="닉네임"
+                                {...validatorProps}
                             >
                                 <Field
                                     type="text"
                                     autoComplete="off"
-                                    name="title"
-                                    placeholder="Title"
+                                    name="nickname"
+                                    value={values.nickname}
                                     component={Input}
-                                    prefix={
-                                        <HiOutlineBriefcase className="text-xl" />
-                                    }
-                                />
-                            </FormRow>
-                            <FormDesription
-                                className="mt-8"
-                                title="Preferences"
-                                desc="Your personalized preference displayed in your account"
-                            />
-                            <FormRow
-                                name="lang"
-                                label="Language"
-                                {...validatorProps}
-                            >
-                                <Field name="lang">
-                                    {({ field, form }) => (
-                                        <Select
-                                            field={field}
-                                            form={form}
-                                            options={langOptions}
-                                            components={{
-                                                Option: CustomSelectOption,
-                                                Control: CustomControl,
-                                            }}
-                                            value={langOptions.filter(
-                                                (option) =>
-                                                    option.value ===
-                                                    values?.lang
-                                            )}
-                                            onChange={(option) =>
-                                                form.setFieldValue(
-                                                    field.name,
-                                                    option.value
-                                                )
-                                            }
-                                        />
-                                    )}
-                                </Field>
-                            </FormRow>
-                            <FormRow
-                                name="timeZone"
-                                label="Time Zone"
-                                {...validatorProps}
-                            >
-                                <Field
-                                    type="text"
-                                    readOnly
-                                    autoComplete="off"
-                                    name="timeZone"
-                                    placeholder="Time Zone"
-                                    component={Input}
-                                    prefix={
-                                        <HiOutlineGlobeAlt className="text-xl" />
-                                    }
                                 />
                             </FormRow>
                             <FormRow
-                                name="syncData"
-                                label="Sync Data"
+                                name="email"
+                                label="이메일"
                                 {...validatorProps}
+                            >
+                                {data.memEmail}
+                            </FormRow>
+                            
+                            <FormRow
+                                name="birth"
+                                label="생년월일"
                                 border={false}
+                                {...validatorProps}
                             >
-                                <Field name="syncData" component={Switcher} />
+                                {data.memBirth}
+                            </FormRow>
+                            <FormRow
+                                name="gender"
+                                label="성별"
+                                border={false}
+                                {...validatorProps}
+                            >
+                                {data.memGender}
                             </FormRow>
                             <div className="mt-4 ltr:text-right">
-                                <Button
-                                    className="ltr:mr-2 rtl:ml-2"
-                                    type="button"
-                                    onClick={resetForm}
-                                >
-                                    Reset
-                                </Button>
                                 <Button
                                     variant="solid"
                                     loading={isSubmitting}
                                     type="submit"
+                                    disabled={!dirty || isSubmitting}
                                 >
-                                    {isSubmitting ? 'Updating' : 'Update'}
+                                    {isSubmitting ? '수정중' : '기본정보 수정'}
                                 </Button>
                             </div>
                         </FormContainer>

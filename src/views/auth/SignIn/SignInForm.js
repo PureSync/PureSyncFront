@@ -36,18 +36,15 @@ const SignInForm = (props) => {
 
     const onSignIn = async (values, setSubmitting) => {
         const { memId, memPassword } = values
+        setSubmitting(true)
 
-        try {
-            const response = await signIn({ memId, memPassword });
-            setSubmitting(true);
-            setMessage(response.message);
-        } catch (err) {
-            setSubmitting(false)
-            setMessage(err.message)
+        const result = await signIn({ memId, memPassword })
+        if (result.status === 'failed') {
+            setMessage(result.message)
         }
 
-
-    };
+        setSubmitting(false)
+    }
 
     return (
         <div className={className}>
@@ -102,35 +99,38 @@ const SignInForm = (props) => {
                                     className="mb-0"
                                     name="rememberMe"
                                     component={Checkbox}
+                                    variant="twoTone"
+                                    color="green-600"
                                     children="로그인 정보 저장"
                                 />
                             </div>
-                            <br></br>
-                    
-
                             <Button
                                 block
                                 loading={isSubmitting}
                                 variant="solid"
                                 type="submit"
+                                className="mr-2 mb-2 mt-2"
+                                color="green-600"
                             >
-                                {isSubmitting ? 'Signing in...' : '로그인'}
+                                {isSubmitting ? '로그인 중' : '로그인'}
                             </Button>
-                            <div className="mt-4 text-center">
-                            <div className="flex justify-between">
-                                <div>
-                                    <ActionLink to={forgotPasswordUrl}>
-                                        아이디 찾기
-                                    </ActionLink>
+                            <div className="mt-2 text-center">
+                                <div className="flex justify-center gap-3">
+                                    <div>
+                                        <ActionLink to={forgotPasswordUrl}>
+                                            아이디 찾기
+                                        </ActionLink>
+                                    </div>
+                                    <div>
+                                        <ActionLink to={resetPasswordUrl}>
+                                            비밀번호 찾기
+                                        </ActionLink>
+                                    </div>
                                 </div>
-                                <div>
-                                    <ActionLink to={resetPasswordUrl}>
-                                        비밀번호 찾기
-                                    </ActionLink>
+                                <div className="mt-2">    
+                                    <span>계정이 없으신가요? </span>
+                                    <ActionLink to={signUpUrl}>회원가입</ActionLink>
                                 </div>
-                            </div>
-                                <span>계정이 없으신가요? </span>
-                                <ActionLink to={signUpUrl}>회원가입</ActionLink>
                             </div>
                         </FormContainer>
                     </Form>

@@ -1,28 +1,39 @@
 import QnaApiService from './QnaApiService'
+import getHeaderCookie from 'utils/hooks/getHeaderCookie'
+import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
 
-export async function apiGetQnaBoardData() {
-    console.log("*****************8");
-    return QnaApiService.fetchData({
-        url: 'http://localhost:9000/api/qnaBoard',
-        method: 'get',
-    })
-}
+const access_token = getHeaderCookie();
+let parse_token = parseJwt(access_token);
+
+// export async function apiGetQnaBoardData() {
+//     console.log("*****************8");
+//     return QnaApiService.fetchData({
+//         url: process.env.REACT_APP_HOST_URL + '/api/qnaBoard',
+//         method: 'get',
+//     })
+// }
 
 export async function apiGetQnaArticle(params) {
-    console.log( params.id );
+    // console.log( params.id );
     //console.log( "****************************************8" );
     return QnaApiService.fetchData({
-        url: `http://localhost:9000/api/qnaBoard/${params.id}`,
+        url: process.env.REACT_APP_HOST_URL + `/api/qnaBoard/${params.id}`,
         method: 'get',
         params,
+        headers: {
+            Authorization: `Bearer ${access_token}`
+        },
     })
 }
 
 export async function apiGetQnaOthersArticleList(params) {
     return QnaApiService.fetchData({
-        url: `http://localhost:9000/api/qnaBoard/${params.id}/comments`,
+        url: process.env.REACT_APP_HOST_URL + `/api/qnaBoard/${params.id}/comments`,
         method: 'get',
         params,
+        headers: {
+            Authorization: `Bearer ${access_token}`
+        },
     })
 }
 
@@ -45,7 +56,7 @@ export async function apiGetQnaCrmCalendar() {
 export async function apiGetQnaCrmCustomers(data) {
 
     // let result = await QnaApiService.fetchData({
-    //     url: 'http://localhost:9000/api/qnaBoard',
+    //     url: process.env.REACT_APP_HOST_URL + '/api/qnaBoard',
     //     method: 'get',
     //     data,
     // });
@@ -53,9 +64,11 @@ export async function apiGetQnaCrmCustomers(data) {
     // console.log( result);
 
     return  QnaApiService.fetchData({
-        url: 'http://localhost:9000/api/qnaBoard',
+        url: process.env.REACT_APP_HOST_URL + '/api/qnaBoard',
         method: 'get',
-        data,
+        headers: {
+            Authorization: `Bearer ${access_token}`
+        },
     });
 }
 
@@ -82,7 +95,7 @@ export async function apiGetQnaCrmCustomerDetails(params) {
     console.log( params.id );
     console.log( "****************************************8" );
     return QnaApiService.fetchData({
-        url: `http://localhost:9000/api/qnaBoard/${params.id}`,
+        url: process.env.REACT_APP_HOST_URL + `/api/qnaBoard/${params.id}`,
         method: 'get',
         params,
     })

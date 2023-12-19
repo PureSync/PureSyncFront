@@ -30,10 +30,8 @@ function App() {
                 </BrowserRouter>
                 </RecoilRoot>
             </PersistGate>
-            <Visit />
         </Provider>
     )
 }
 
 export default App
-// 테스트

@@ -1,7 +1,7 @@
 import ApiService from './ApiService'
 
 export async function apiGetMemberDashboardData(selectedDate) {
-    let url = 'http://localhost:9000/api/dashboard/1';
+    let url = process.env.REACT_APP_HOST_URL + '/api/dashboard';
 
     if (selectedDate) {
         url += `/${selectedDate}`;
@@ -15,7 +15,7 @@ export async function apiGetMemberDashboardData(selectedDate) {
 
 export async function getPositive () {
     return ApiService.fetchData({
-        url: 'http://127.0.0.1:9000/api/positive',
-        method: 'get'
+        url: process.env.REACT_APP_HOST_URL + '/api/positive',
+        method: 'get',
     })
 }

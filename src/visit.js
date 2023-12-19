@@ -5,7 +5,7 @@ const Visit = () => {
     useEffect(
         () => {
             axios.post('http://localhost:9000/api/visitor')
-            .then((res) => console.log(res))
+            .then()
             .catch((res) => console.log(res))
         },[]
     )

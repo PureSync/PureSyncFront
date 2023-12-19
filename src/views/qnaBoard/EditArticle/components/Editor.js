@@ -18,6 +18,9 @@ import * as Yup from 'yup'
 import axios from 'axios'
 import Upload from 'components/ui/Upload'
 import { useLocation } from 'react-router-dom';
+import getHeaderCookie from 'utils/hooks/getHeaderCookie'
+import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
+
 axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
 // const validationSchema = Yup.object().shape({
 //     title: Yup.string().required('Title required'),
@@ -27,17 +30,18 @@ axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
 
 
 const Editor = () => {
+  const access_token = getHeaderCookie();
+  let parse_token = parseJwt(access_token);
+  let { memId } = getMemInfoFromToken(parse_token);
   const navigate = useNavigate();
-  const memId = 'aaa';
   const { state } = useLocation();
   const { updateData } = state || {};
-  console.log(updateData);
+  // console.log(updateData);
   //const updateData = location.state && location.state.updateData;
   const onUpload = (files) => {
 
-    console.log(files);
+    // console.log(files);
   }
-
 
   function stripHtmlUsingDOM(html) {
     const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -50,11 +54,11 @@ const Editor = () => {
     const formData = new FormData(window.document.myform);
 
     formData.append("qnaBoardContents", values.qnaBoardContents);
-    console.log("****", formData);
+    // console.log("****", formData);
 
     //formData.append("qnaBoardContents",  values.qnaBoardContents);
     for (let key of formData.keys()) {
-      console.log(key, formData.get(key));
+      // console.log(key, formData.get(key));
     }
     // formData.append('qnaBoardDto', new Blob([JSON.stringify({
     //   qnaBoardName: values.qnaBoardName,
@@ -73,36 +77,43 @@ const Editor = () => {
 
     try {
       if (updateData == null) {
-        const response = await axios.post('http://localhost:9000/api/qnaBoard', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
+        const shouldRegister = window.confirm('게시글을 등록하시겠습니까?');
+        if (shouldRegister) {
+          const response = await axios.post(process.env.REACT_APP_HOST_URL + '/api/qnaBoard', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${access_token}`
+            },
+            data: formData,
+          });
 
-          },
-          data: formData,
-        });
-
-        console.log('파일 업로드 성공:', response.data);
-        alert('게시글이 작성되었습니다.');
-        navigate('/qnaBoard');
+          // console.log('파일 업로드 성공:', response.data);
+          // alert('게시글이 작성되었습니다.');
+          const newArticleId = response.data.data.qnaBoard.qnaBoardSeq;
+          navigate(`/qnaBoard/view?id=${newArticleId}`);
+        }
       } else {
-        console.log(updateData);
+        // console.log(updateData);
 
-        const response = await axios.put(`http://localhost:9000/api/qnaBoard/${updateData.articleId}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
+        const shouldUpdate = window.confirm('게시글을 수정하시겠습니까?');
+        if (shouldUpdate) {
+          const response = await axios.put(process.env.REACT_APP_HOST_URL + `/api/qnaBoard/${updateData.articleId}`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${access_token}`
+            },
+            data: formData,
+          });
 
-          },
-          data: formData,
-        });
-
-        console.log('파일 업로드 성공:', response.data);
-
-        alert('게시글이 수정되었습니다.');
-        navigate('/qnaBoard');
+          // console.log('파일 업로드 성공:', response.data);
+          // alert('게시글이 수정되었습니다.');
+          const articleId = response.data.data.qnaBoard.qnaBoardSeq;
+          navigate(`/qnaBoard/view?id=${articleId}`);
+        }
       }
     } catch (error) {
       // Handle errors
-      console.error('Error while saving article:', error);
+      // console.error('Error while saving article:', error);
     }
 
     setSubmitting(false);
@@ -147,7 +158,7 @@ const Editor = () => {
                 fileList={field.value}
               />
             }} */}
-            
+
             {/* <div className="upload-file-list">
               {files.map((file, index) => (
                 <FileItem file={file} key={file.qnaBoardfileName + index}>

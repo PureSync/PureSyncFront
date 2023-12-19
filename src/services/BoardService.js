@@ -1,12 +1,21 @@
 import ApiService from './ApiService'
+import getHeaderCookie from 'utils/hooks/getHeaderCookie'
+import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
 
-export async function apiGetBoardData() {
-    console.log("*****************8");
-    return ApiService.fetchData({
-        url: 'http://localhost:9000/api/board',
-        method: 'get',
-    })
-}
+const access_token = getHeaderCookie();
+let parse_token = parseJwt(access_token);
+
+// export async function apiGetBoardData() {
+//     console.log("*****************8");
+//     return ApiService.fetchData({
+//         url: 'http://localhost:9000/api/board',
+//         method: 'get',
+//         headers: {
+//             Authorization: `Bearer ${access_token}`
+//         },
+//     });
+// }
+
 
 export async function apiGetArticle(params) {
     console.log( params.id );
@@ -15,6 +24,9 @@ export async function apiGetArticle(params) {
         url: `http://localhost:9000/api/board/${params.id}`,
         method: 'get',
         params,
+        headers: {
+            Authorization: `Bearer ${access_token}`
+        },
     })
 }
 
@@ -23,6 +35,9 @@ export async function apiGetOthersArticleList(params) {
         url: `http://localhost:9000/api/board/${params.id}/comments`,
         method: 'get',
         params,
+        headers: {
+            Authorization: `Bearer ${access_token}`
+        },
     })
 }
 
@@ -55,7 +70,9 @@ export async function apiGetCrmCustomers(data) {
     return  ApiService.fetchData({
         url: 'http://localhost:9000/api/board',
         method: 'get',
-        data,
+        headers: {
+            Authorization: `Bearer ${access_token}`
+        },
     });
 }
 

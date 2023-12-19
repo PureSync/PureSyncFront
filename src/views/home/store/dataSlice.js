@@ -23,7 +23,6 @@ const dataSlice = createSlice({
     extraReducers: {
         [getMemberDashboardData.fulfilled]: (state, action) => {
             state.dashboardData = action.payload.data
-            console.log(state.dashboardData);
             state.loading = false
         },
         [getMemberDashboardData.pending]: (state) => {

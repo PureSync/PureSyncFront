@@ -1,21 +1,31 @@
 import Cookies from 'js-cookie';
-import { apiSignIn, apiSignOut, apiSignUp } from 'services/AuthService';
+import { useDispatch } from 'react-redux'
+import { apiSignIn, apiSignUp } from 'services/AuthService';
 import appConfig from 'configs/app.config';
 import { REDIRECT_URL_KEY } from 'constants/app.constant';
+import { setUser, initialState } from 'store/auth/userSlice'
+import { onSignInSuccess, onSignOutSuccess } from 'store/auth/sessionSlice'
 import { useNavigate } from 'react-router-dom';
 import useQuery from './useQuery';
+import { setCookie } from './cookie';
+import { getMemInfoFromToken } from './parseToken';
 
 function useAuth() {
     const navigate = useNavigate();
     const query = useQuery();
+    const dispatch = useDispatch()
 
     const signIn = async (values) => {
         try {
             const resp = await apiSignIn(values);
-           
-            if (resp!=null) {
-                // const { token } = resp.data;
-                // Cookies.set('auth_token', token, { expires: 1 }); 
+            const token = resp.data.data.access_token
+            setCookie(token);
+            dispatch(onSignInSuccess(token));
+
+            const memberInfo = getMemInfoFromToken(token);
+            dispatch(setUser(memberInfo));
+
+            if (resp != null) {
                 const redirectUrl = query.get(REDIRECT_URL_KEY);
                 navigate(redirectUrl ? redirectUrl : appConfig.authenticatedEntryPath);
                 return {
@@ -24,18 +34,21 @@ function useAuth() {
                 };
             }
         } catch (errors) {
+            console.log(errors);
             return {
                 status: 'failed',
                 message: errors?.response?.data?.message || errors.toString(),
             };
         }
+
+        
+        
     };
 
     const signUp = async (values) => {
     };
 
     const signOut = async () => {
-        await apiSignOut();
         Cookies.remove('access_token');
         navigate(appConfig.unAuthenticatedEntryPath);
     };

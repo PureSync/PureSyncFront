@@ -10,16 +10,13 @@ import {
 } from 'components/ui'
 import { RichTextEditor } from 'components/shared'
 import { Field, Form, Formik } from 'formik'
-import { useSelector } from 'react-redux'
-import { apiPostArticle } from 'services/KnowledgeBaseService'
 import { useNavigate } from 'react-router-dom'
-import ReactHtmlParser from 'html-react-parser'
 import * as Yup from 'yup'
 import axios from 'axios'
-import Upload from 'components/ui/Upload'
 import { useLocation } from 'react-router-dom';
 import getHeaderCookie from 'utils/hooks/getHeaderCookie'
 import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
+
 axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
 
 // const validationSchema = Yup.object().shape({
@@ -33,19 +30,20 @@ const Editor = () => {
   const navigate = useNavigate();
 
   const access_token = getHeaderCookie();
-    let parse_token = parseJwt(access_token);
-    let { memId } = getMemInfoFromToken(parse_token);
+  let parse_token = parseJwt(access_token);
+  let { memId } = getMemInfoFromToken(parse_token);
 
   const { state } = useLocation();
   const { updateData } = state || {};
   console.log(updateData);
-  
+
+
   //const updateData = location.state && location.state.updateData;
   const onUpload = (files) => {
 
     console.log(files);
   }
-  
+
 
   function stripHtmlUsingDOM(html) {
     const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -58,28 +56,16 @@ const Editor = () => {
     const formData = new FormData(window.document.myform);
 
     formData.append("boardContents", values.boardContents);
-    console.log("****", formData);
-
-    //formData.append("boardContents",  values.boardContents);
     for (let key of formData.keys()) {
       console.log(key, formData.get(key));
     }
-    // formData.append('boardDto', new Blob([JSON.stringify({
-    //   boardName: values.boardName,
-    //   boardContents: values.boardContents,
-    //   memId: memId,
-    // })], { type: 'application/json' }));
-
-    // formData.append("boardName", values.boardName);
-    // formData.append("boardContents", values.boardContents);
-    // formData.append("memId", memId);
-
-    // console.log( values.files);
-    // // Add file to the FormData
-    // formData.append('file', values.file);
-
-
+    
+    if (values.file == undefined) {
+        formData.delete("file");
+    }
+    
     try {
+
       if (updateData == null) {
         const response = await axios.post('http://localhost:9000/api/board', formData, {
           headers: {
@@ -121,7 +107,7 @@ const Editor = () => {
       initialValues={{
         boardName: updateData ? updateData.boardName : '',
         boardContents: updateData ? updateData.boardContents : '',
-        memId: memId,
+
         files: updateData ? updateData.boardFile : '',
       }}
       onSubmit={(values, { setSubmitting }) => {
@@ -130,7 +116,6 @@ const Editor = () => {
     >
       {({ values, touched, errors, isSubmitting, setFieldValue }) => (
         <Form enctype="multipart/form-data" name="myform">
-          <input type='hidden' value={memId} name="memId" />
           <FormContainer>
             <FormItem label="제목">
               <Field autoComplete="off" name="boardName" component={Input} />
@@ -151,33 +136,32 @@ const Editor = () => {
                 )}
               </Field>
             </FormItem>
-            {/* {({ field, form }) => {
-              <Upload 
-                fileList={field.value}
-              />
-            }} */}
-            
-            {/* <div className="upload-file-list">
-              {files.map((file, index) => (
-                <FileItem file={file} key={file.boardfileName + index}>
-                  <CloseButton
-                    onClick={() => removeFile(index)}
-                    className="upload-file-remove"
-                  />
-                </FileItem>
-              ))}
-            </div> */}
             <FormItem label="파일 업로드">
 
               <Field
                 type="file"
                 name="file"
                 multiple
+                onChange={(event) => {
+                  const file = event.currentTarget.files[0];
+                  setFieldValue('files', file || null);
+
+                  if (file) {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                      setFieldValue('filePreview', reader.result);
+                    };
+                    reader.readAsDataURL(file);
+                  } else {
+                    setFieldValue('filePreview', null);
+                  }
+                }}
               />
-              {({ field, form }) => (
-                <RichTextEditor
-                  value={field.value}
-                  onChange={(val) => form.setFieldValue(field.name, val)}
+              {values.filePreview && (
+                <img
+                  src={values.filePreview}
+                  alt="이미지 미리보기"
+                  style={{ width: '200px', height: 'auto', marginTop: '10px' }}
                 />
               )}
             </FormItem>

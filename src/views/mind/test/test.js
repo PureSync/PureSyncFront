@@ -1,86 +1,104 @@
 import React, { useState, useEffect } from 'react';
+import ActionLink from 'components/shared/ActionLink'
 import axios from 'axios';
-import { Select } from 'components/ui'
-import { Button } from 'components/ui'
+import { Card } from 'components/ui'
+import { Loading } from 'components/shared'
 import { useNavigate } from 'react-router-dom';
-import './test.css';
+import getHeaderCookie from 'utils/hooks/getHeaderCookie'
 
 const testOptions = [
-  { value: 'stress', label: '스트레스 검사' },
-  { value: 'depression', label: '우울증 검사' }
+    { value: 'stress', label: '스트레스 검사' },
+    { value: 'depression', label: '우울증 검사' }
 ];
 
 const Test = () => {
-  const navigate = useNavigate();
-  const [selectedTest, setSelectedTest] = useState(null);
-  const [stressScore, setStressScore] = useState(null);
-  const [depressionScore, setDepressionScore] = useState(null);
+    const access_token = getHeaderCookie();
+    const navigate = useNavigate();
+    // const [selectedTest, setSelectedTest] = useState(null);
+    const [stressScore, setStressScore] = useState(null);
+    const [depressionScore, setDepressionScore] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const memSeq = 2;
-        const testSeqStress = 1;
-        const testSeqDepression = 2;
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const testSeqStress = 1;
+                const testSeqDepression = 2;
 
-        // Stress API 호출
-        const stressResponse = await axios.get(`http://127.0.0.1:9000/api/test/stress/answer/${memSeq}/${testSeqStress}`);
-        const stressTotalScore = stressResponse.data.data.allStressAnswer.total;
-        setStressScore(stressTotalScore);
+                // Stress API 호출
+                const stressResponse = await axios.get(process.env.REACT_APP_HOST_URL + `/api/test/stress/answer/${testSeqStress}`, {
+                    headers: {
+                        Authorization: `Bearer ${access_token}`
+                    }
+                });
+                const stressTotalScore = stressResponse.data.data.allStressAnswer.total;
+                setStressScore(stressTotalScore);
 
-        // Depression API 호출
-        const depressionResponse = await axios.get(`http://127.0.0.1:9000/api/test/depression/answer/${memSeq}/${testSeqDepression}`);
-        const depressionTotalScore = depressionResponse.data.data.allDepressionAnswer.total;
-        setDepressionScore(depressionTotalScore);
-      } catch (error) {
-        console.error('Error fetching scores:', error);
-      }
-    };
+                // Depression API 호출
+                const depressionResponse = await axios.get(process.env.REACT_APP_HOST_URL + `/api/test/depression/answer/${testSeqDepression}`, {
+                    headers: {
+                        Authorization: `Bearer ${access_token}`
+                    }
+                });
+                const depressionTotalScore = depressionResponse.data.data.allDepressionAnswer.total;
+                setDepressionScore(depressionTotalScore);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching scores:', error);
+            }
+        };
 
-    fetchData();
-  }, []);
+        fetchData();
+    }, [access_token]);
 
-  // const handleTest = (testType) => {
-  //   setSelectedTest(testType);
-  // };
+    const handleCardClick = (option) => {
+        navigate(`/mind/test/${option.value}`);
+      };
 
-  const handleSelectChange = (selectedOption) => {
-    console.log('Selected Option:', selectedOption);
-    setSelectedTest(selectedOption.value);
-  };
-  
-  return (
-    <div className="test-container">
-      <h1>검사 선택</h1>
-      {/* <p>원하는 검사를 선택하세요:</p>
-
-      <div className="test-buttons">
-        <button onClick={() => handleTest('stress')}>Stress 검사</button> <br />
-        <button onClick={() => handleTest('depression')}>Depression 검사</button>
-      </div> <br /> */}
-
-      <div>
-        <Select
-          placeholder="원하는 검사를 선택하세요"
-          options={testOptions}
-          onChange={handleSelectChange}
-        />
-      </div>
-
-      <div>
-        {stressScore !== null && <p>스트레스 검사 결과: {stressScore}점</p>}
-        {depressionScore !== null && <p>우울증 검사 결과: {depressionScore}점</p>}
-      </div>
-
-      {selectedTest && (
-        <div className="button-container">
-          <Button variant="solid" onClick={() => navigate(`/mind/test/${selectedTest}`)}>
-            <h3>선택한 검사 시작</h3>
-          </Button>
+    const cardHeader = (
+        <div className="rounded-tl-lg rounded-tr-lg overflow-hidden">
+            <img src="/img/others/img-1.jpg" alt="card header" />
         </div>
-      )}
-    </div>
-  );
+    )
+    
+    return (
+        <div>
+            <h3 className="mb-8">심리 검사</h3>
+            <Loading loading={loading}>
+            <div className="grid grid-cols-3 gap-4">
+                {testOptions.map((option, index) => (
+                    <div className="max-w-xs">
+                        <Card key={index}
+                            clickable
+                            className="hover:shadow-lg transition duration-150 ease-in-out dark:border dark:border-gray-600 dark:border-solid"
+                            header={cardHeader}
+                            headerClass="p-0"
+                            footerBorder={false}
+                            headerBorder={false}
+                            onClick={() => handleCardClick(option)}
+                        >
+                            <div style={{'min-height' : '130px'}}>
+                            <span className="text-emerald-600 font-semibold">
+                                [{option.value}]
+                            </span>
+                            <h4 className="font-bold my-2">{option.label}</h4>
+                            <p>
+                                {option.value === 'stress' && stressScore !== null ? (
+                                    <p>이전 검사 결과 : {stressScore}점</p>
+                                ) : option.value === 'depression' && depressionScore !== null ? (
+                                    <p>이전 검사 결과 : {depressionScore}점</p>
+                                ) : (
+                                    <p>아직 참여하지 않으셨네요. 내 마음을 진단해보세요!</p>
+                                )}
+                            </p>
+                            </div>
+                        </Card>
+                    </div>
+                ))}
+            </div>
+            </Loading>
+        </div>
+    );
 };
 
 export default Test;

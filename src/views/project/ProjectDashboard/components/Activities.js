@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card, Button, Timeline } from 'components/ui'
-import Event from 'views/account/ActivityLog/components/Event'
-import TimelineAvatar from 'views/account/ActivityLog/components/TimelineAvatar'
+// import Event from 'views/account/ActivityLog/components/Event'
+// import TimelineAvatar from 'views/account/ActivityLog/components/TimelineAvatar'
 import { useNavigate } from 'react-router-dom'
 import isEmpty from 'lodash/isEmpty'
 
@@ -14,7 +14,8 @@ const Activities = ({ data = [] }) => {
 
     return (
         <Card>
-            <div className="flex items-center justify-between mb-6">
+            {/* activity 삭제로 인한 주석 */}
+            {/* <div className="flex items-center justify-between mb-6">
                 <h4>Activitiess</h4>
                 <Button onClick={onViewAllActivity} size="sm">
                     View All
@@ -35,7 +36,7 @@ const Activities = ({ data = [] }) => {
                         ))
                     )}
                 </Timeline>
-            </div>
+            </div> */}
         </Card>
     )
 }

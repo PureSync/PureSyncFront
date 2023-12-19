@@ -11,6 +11,7 @@ import {
     HiQuestionMarkCircle
 } from 'react-icons/hi'
 import { Tooltip } from 'components/ui'
+import StarRate from './StarRate'
 
 const GrowShrinkEat = ({ wish, real }) => {
     return (
@@ -150,7 +151,6 @@ const StatisticIcon = ({ type }) => {
 }
 
 const ScoreIcon = (score) => {
-    console.log(score.value);
     switch (score.value) {
         case 0:
         case 1:
@@ -211,11 +211,14 @@ const Statistic = ({ data }) => {
                     <div className="flex items-center gap-4">
                         <StatisticIcon type="score" />
                         <div>
-                            <h3 className="font-bold leading-none">{data.score}점</h3>
+                            <div className="flex gap-1">
+                                <StarRate data={data.score} />
+                                <span style={{'white-space': 'nowrap'}}>[{data.score}점]</span>
+                            </div>
                             <p className="font-semibold">몸과 마음 점수</p>
                         </div>
                     </div>
-                        <ScoreIcon value={data.score} />
+                        <ScoreIcon value={data.score} allowHalf="true"/>
                 </div>
             </Card>
         </div>

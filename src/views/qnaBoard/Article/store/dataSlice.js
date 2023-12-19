@@ -35,8 +35,6 @@ const dataSlice = createSlice({
         [getArticle.fulfilled]: (state, action) => {
             state.loading = false
             state.article = action.payload.data.qnaBoardDetailDto;
-            // console.log( "***********************************");
-            // console.log( state.article);
         },
         [getArticle.pending]: (state) => {
             state.loading = true

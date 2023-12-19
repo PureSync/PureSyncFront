@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import SendHeaderCookie from 'utils/hooks/getHeaderCookie'
 import { Loading } from 'components/shared'
 import { getMemberDashboardData } from './store/dataSlice'
 import {getPositive} from 'services/DashboardService'
@@ -9,13 +10,14 @@ import MemberDashboardHeader from "./component/MemberDashboardHeader"
 import Statistic from './component/Statistic'
 import TaskOverview from "./component/TaskOverview"
 import EatOverview from "./component/EatOverview"
-import Schedule from './component/Schedule'
 import { DatePicker, Button } from 'components/ui'
 import { AdaptableCard } from 'components/shared'
+import 'dayjs/locale/ko'
 
 injectReducer('memberDashboard', reducer)
 
 const Dashboard = () => {
+    const token = SendHeaderCookie(); 
     const dispatch = useDispatch()
 
     let today = new Date();
@@ -28,7 +30,6 @@ const Dashboard = () => {
     const exerciseList = useSelector((state) => state.memberDashboard.data.dashboardData.exercise);
     const sleepList = useSelector((state) => state.memberDashboard.data.dashboardData.sleep);
     const loading = useSelector((state) => state.memberDashboard.data.loading);
-    // localStorage.removeItem("admin");
     useEffect(() => {
         fetchData();
         fetchPositiveData();
@@ -60,6 +61,7 @@ const Dashboard = () => {
                     <AdaptableCard>
                     <div className="mb-1 font-semibold text-sm">기준일자</div>
                     <DatePicker
+                        locale="ko"
                         DatePickerClick={DatePickerClick}
                         placeholder = {selectDate}
                         defaultValue={selectDate}

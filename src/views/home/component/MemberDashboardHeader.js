@@ -23,7 +23,7 @@ const MemberDashboardHeader = ({ data }) => {
     return (
         <AdaptableCard>
             <h4 className="mb-1 text-center">
-                {data.pvContents}
+                {data && data.pvContents}
                 <Button
                     onClick={() => speechText(data.pvContents)}
                     shape="circle"
@@ -33,7 +33,7 @@ const MemberDashboardHeader = ({ data }) => {
                     disabled={isSpeaking}
                 />
             </h4>
-            <p className="text-center">-{data.pvTalker}-</p>
+            <p className="text-center">-{data && data.pvTalker}-</p>
             
         </AdaptableCard>
     )

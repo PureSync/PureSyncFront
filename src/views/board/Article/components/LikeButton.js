@@ -4,9 +4,14 @@ import { Button } from 'components/ui';
 import { HiOutlineHeart } from 'react-icons/hi';
 import { useDispatch } from 'react-redux';
 import { setArticle } from 'views/board/EditArticle/store/dataSlice';
+import getHeaderCookie from 'utils/hooks/getHeaderCookie'
+import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
 
 const LikeButton = ({ article ,isLike}) => {
   const dispatch = useDispatch();
+  const access_token = getHeaderCookie();
+    let parse_token = parseJwt(access_token);
+    let { memId } = getMemInfoFromToken(parse_token);
   const [liked, setLiked] = useState(isLike);
   const [likesCount, setLikesCount] = useState(article.boardLikescount);
   
@@ -17,8 +22,16 @@ const LikeButton = ({ article ,isLike}) => {
     try {
       // 병렬로 두 요청을 실행
       const [response, response2] = await Promise.all([
-        axios.get(`http://localhost:9000/api/board/${article.boardSeq}/likes`),
-        axios.get(`http://localhost:9000/api/board/${article.boardSeq}/mylikes`),
+        axios.get(`http://localhost:9000/api/board/${article.boardSeq}/likes`, {
+          headers: {
+            Authorization: `Bearer ${access_token}`
+          }
+        }),
+        axios.get(`http://localhost:9000/api/board/${article.boardSeq}/mylikes`, {
+          headers: {
+            Authorization: `Bearer ${access_token}`
+          }
+        }),
       ]);
   
       // 각 응답에 대한 추가 작업 수행
@@ -41,7 +54,12 @@ const LikeButton = ({ article ,isLike}) => {
   const handleLike = useCallback(async () => {
     try {
       // 서버에 좋아요 요청을 보냄
-      await axios.post(`http://localhost:9000/api/board/${article.boardSeq}/likes`);
+      await axios.post(`http://localhost:9000/api/board/${article.boardSeq}/likes`, null, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${access_token}`
+      }
+    });
 
       // 서버에서 좋아요 카운트를 업데이트했다면, 다시 데이터를 불러옴
       fetchData();

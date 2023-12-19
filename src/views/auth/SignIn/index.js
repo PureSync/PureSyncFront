@@ -5,8 +5,8 @@ const SignIn = () => {
     return (
         <>
             <div className="mb-8">
-                <h3 className="mb-1">Pure Sync 어서오세요.</h3>
-                <p>로그인을 하시고 Pure Sync와 함께하세요.</p>
+                <h3 className="mb-1">PureSync</h3>
+                <p>로그인 후 PureSync와 함께하세요.</p>
             </div>
             <SignInForm disableSubmit={false} />
         </>

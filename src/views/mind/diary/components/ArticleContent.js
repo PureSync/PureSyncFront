@@ -6,14 +6,10 @@ import {
     TextBlockSkeleton,
 } from 'components/shared'
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { Button } from 'components/ui'
 import { HiOutlinePencil, HiOutlineTrash } from 'react-icons/hi'
 import { Progress } from 'components/ui'
-import getHeaderCookie from 'utils/hooks/getHeaderCookie'
-import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
-
-
+import { apiGetDiary, apiDeleteDiary } from 'services/MindDiaryService';
 
 const ArticleContent = () => {
     const location = useLocation();
@@ -26,36 +22,24 @@ const ArticleContent = () => {
     const [loading, setLoding] = useState(true);
     const navigate = useNavigate();
 
-    //Header Cookie
-    const access_token = getHeaderCookie();
-
     useEffect(() => {
-        // axios를 사용하여 데이터를 가져옴
-        axios.get(process.env.REACT_APP_HOST_URL + `/api/mind/diary/${id}`, {
-            headers: {
-                Authorization: `Bearer ${access_token}`
-            }
-        })
-            .then(response => {
-                // 요청이 성공하면 데이터를 articles 상태로 설정
+        apiGetDiary(id)
+        .then((response) => {
                 setDiary(response.data.data.mdDiary);
                 setPositive(response.data.data.positive);
                 setNegative(response.data.data.negative);
                 setNeutral(response.data.data.neutral);
                 setLoding(false);
             })
-            .catch(error => {
-                // 에러 처리
-                console.error('데이터를 불러오는 중 에러 발생:', error);
-            });
+        .catch((error) => {})
     }, []);
 
     const onClickDelete = () => {
-        axios.delete(process.env.REACT_APP_HOST_URL + `/api/mind/diary/${id}`)
-            .then((res) => {
-                navigate('/mind/diary');
-
-            })
+        apiDeleteDiary(id)
+        .then((res) => {
+            navigate('/mind/diary');
+        })
+        .catch((error) => {})
     }
 
     const onClickEdit = () => {

@@ -16,9 +16,14 @@ import { Button } from 'components/ui'
 import { HiOutlineClock, HiOutlineCog, HiOutlinePencil, HiOutlineInboxIn, HiOutlineTrash,HiOutlineHeart} from 'react-icons/hi'
 import { getboardFile } from 'services/DashboardService'
 import LikeButton from './LikeButton';
-
+import getHeaderCookie from 'utils/hooks/getHeaderCookie'
+import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
 const ArticleContent = ({ articleId }) => {
     const navigate = useNavigate();
+    const access_token = getHeaderCookie();
+    let parse_token = parseJwt(access_token);
+    let { memId } = getMemInfoFromToken(parse_token);
+    
     const dispatch = useDispatch()
     const [flag, setFlag] = useState(false);
     const [mylikes,setMylikes] = useState(0);
@@ -48,15 +53,19 @@ const ArticleContent = ({ articleId }) => {
         }
         setFlag(true);
     }
-    const fetchMylikes = async () => {
+    const fetchMylikes = async (access_token) => {
         try {
-            const response = await axios.get(`http://localhost:9000/api/board/${article.boardSeq}/mylikes`)
+            const response = await axios.get(`http://localhost:9000/api/board/${article.boardSeq}/mylikes`, {
+                headers: {
+                    Authorization: `Bearer ${access_token}`
+                }
+            });
+    
             setMylikes(response.data.data.findMyLikes);
-            
         } catch (error) {
             console.error("Error positive data:", error);
         }
-    }
+    };
     const handleUpdate = () => {
         // 필요한 데이터를 객체로 만들어 전달
         const updateData = {
@@ -78,8 +87,12 @@ const ArticleContent = ({ articleId }) => {
                 console.error('게시물 boardSeq를 찾을 수 없습니다.');
                 return;
             }
-            await axios.delete(`http://localhost:9000/api/board/${article.boardSeq}`);
-            console.log('게시물 삭제 성공');
+            await axios.delete(`http://localhost:9000/api/board/${article.boardSeq}`,{
+                headers: {
+                    Authorization: `Bearer ${access_token}`
+                },
+            });
+            
             navigate('/board');
         } catch (error) {
             console.error('게시물 삭제 중 오류:', error);
@@ -143,12 +156,19 @@ const ArticleContent = ({ articleId }) => {
                 <p>{ReactHtmlParser(article.content || '')}</p>
                 <p>{article.boardContents}</p>
                 {
-                    flag && article.boardFile
-                        ? article.boardFile.map((item, index) => (
-                            <img key={index} src={item.fileUrl} alt={`image-${index}`} style={{ width: '500px', height: 'auto' }} />
-                        ))
-                        : null
-                }
+    flag && article.boardFile && article.boardFile.length > 0
+        ? article.boardFile.map((item, index) => (
+            item.fileUrl && (
+                <img
+                    key={index}
+                    src={item.fileUrl}
+                    alt={`image-${index}`}
+                    style={{ width: '500px', height: 'auto' }}
+                />
+            )
+        ))
+        : null
+}
 
 
             </div>

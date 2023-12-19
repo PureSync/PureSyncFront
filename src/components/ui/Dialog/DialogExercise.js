@@ -160,7 +160,6 @@ const DialogExercise = (props) => {
             const exerciseInfo = {
                 elDate: props.selectDate,
                 elTime: exerciseTimeValue,
-                memSeq: memSeq,
                 ecSeq: item.ecSeq
             };
             i++;

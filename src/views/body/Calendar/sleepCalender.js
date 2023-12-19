@@ -9,12 +9,17 @@ import { setSelected, openDialog } from './store/stateSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import cloneDeep from 'lodash/cloneDeep'
 import axios from 'axios';
+import getHeaderCookie from 'utils/hooks/getHeaderCookie'
+import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
 
 injectReducer('sleepCalendar', reducer)
 
 const SleepCalendar = () => {
     const dispatch = useDispatch();
-    
+    const access_token = getHeaderCookie();
+    let parse_token = parseJwt(access_token);
+    let { memId } = getMemInfoFromToken(parse_token);
+
     
     let events = useSelector((state) => state.sleepCalendar.data.eventList.data);
     if( events == undefined)
@@ -67,7 +72,12 @@ const SleepCalendar = () => {
         if (type === 'NEW') {
             console.log(data);
             newEvents.push(data)
-            response = await axios.post('http://localhost:9000/api/sleep/save', data);
+            // response = await axios.post('http://localhost:9000/api/sleep/save', data, {
+            //     headers: {
+            //       'Content-Type': 'application/json',
+            //       Authorization: `Bearer ${access_token}`
+            //     }
+            //   });
             // 여가 ㅛㅔㄹ이브
         }
 

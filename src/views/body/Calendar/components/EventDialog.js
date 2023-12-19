@@ -18,11 +18,18 @@ import { components } from 'react-select';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'
+import getHeaderCookie from 'utils/hooks/getHeaderCookie'
+import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
+import 'dayjs/locale/ko'
+
 const { DateTimepicker } = DatePicker;
 
 const { Control } = components;
 
 const { useUniqueId } = hooks;
+const access_token = getHeaderCookie();
+    let parse_token = parseJwt(access_token);
+    let { memId } = getMemInfoFromToken(parse_token);
 
 // 캘린더 이벤트 색상 목록 가져오기
 const colorKeys = Object.keys(eventColors);
@@ -111,10 +118,21 @@ const EventDialog = ({ submit }) => {
             sleepWudate : (values.endDate),
         };     
         const url = eventData.id ? `http://localhost:9000/api/sleep/${eventData.id}` : 'http://localhost:9000/api/sleep/save';
-        try {
-            
-            const response = eventData.id
-        ? axios.put(url, eventData) : axios.post(url, eventData);
+
+try {
+  const response = eventData.id
+    ? axios.put(url, eventData, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${access_token}`
+        }
+      })
+    : axios.post(url, eventData, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${access_token}`
+        }
+      });
             // Axios를 사용하여 서버로 데이터 전송,
             // 서버 요청이 성공하면 콘솔에 응답 확인 및 상태 업데이트
             console.log(eventData);
@@ -200,6 +218,7 @@ const EventDialog = ({ submit }) => {
                                     <Field name="startDate" placeholder="Date">
                                         {({ field, form }) => (
                                             <DateTimepicker
+                                                locale="ko"
                                                 field={field}
                                                 form={form}
                                                 value={field.value}
@@ -221,6 +240,7 @@ const EventDialog = ({ submit }) => {
                                     <Field name="endDate" placeholder="Date">
                                         {({ field, form }) => (
                                             <DateTimepicker
+                                                locale="ko"
                                                 field={field}
                                                 form={form}
                                                 value={field.value}

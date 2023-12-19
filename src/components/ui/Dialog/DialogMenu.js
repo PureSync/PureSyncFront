@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import { theme } from 'twin.macro';
 import useWindowSize from '../hooks/useWindowSize';
 import getHeaderCookie from 'utils/hooks/getHeaderCookie'
-import {parseJwt, getMemInfoFromToken} from 'utils/hooks/parseToken'
+import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
 
 import { Button, Select, Input } from 'components/ui';
 import Axios from 'axios';
@@ -17,7 +17,7 @@ const DialogMenu = (props) => {
     //Header Cookie
     const access_token = getHeaderCookie();
     let parse_token = parseJwt(access_token);
-    let  { memId, memSeq } = getMemInfoFromToken(parse_token);
+    let { memId, memSeq } = getMemInfoFromToken(parse_token);
 
     // 현재 창 크기를 가져오는 커스텀 훅 사용
     const currentSize = useWindowSize();
@@ -133,24 +133,24 @@ const DialogMenu = (props) => {
             setInputError(true); // 검색어 길이가 2자 미만인 경우 inputError를 true로 설정
         } else {
             setInputError(false); // 검색어 길이가 2자 이상인 경우 inputError를 false로 설정
-            
-            Axios.get( process.env.REACT_APP_HOST_URL + '/api/menu/foodList',
+
+            Axios.get(process.env.REACT_APP_HOST_URL + '/api/menu/foodList',
                 { params: { "foodName": searchValue } },
             )
-            .then((res) => {
-                setSearchResults(res.data.data.allFoods);
-                setLoding(true);
-            })
-            .catch((res) => {
-                console.log(res);
-            })
+                .then((res) => {
+                    setSearchResults(res.data.data.allFoods);
+                    setLoding(true);
+                })
+                .catch((res) => {
+                    console.log(res);
+                })
         }
     }
 
     // 검색 입력란에서 엔터 키를 눌렀을 때 검색 실행
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
-        performSearch();
+            performSearch();
         }
     }
 
@@ -190,29 +190,18 @@ const DialogMenu = (props) => {
                 menuWhen: menuWhenValue,
                 menuDate: props.selectDate,
                 menuGram: parseInt(gramAmounts),
-                member: { memSeq: memSeq },
-                food: {
-                    foodSeq: item.foodSeq,
-                    foodName: item.foodName,
-                    foodCar: item.foodCar,
-                    foodPro: item.foodPro,
-                    foodFat: item.foodFat,
-                    foodSugar: item.foodSugar,
-                    foodNa: item.foodNa,
-                    foodCol: item.foodCol,
-                    foodKcal: item.foodKcal,
-                },
+                foodSeq: item.foodSeq
             };
             sendFoodDatas.push(foodInfo);
         });
 
         Axios.post(process.env.REACT_APP_HOST_URL + '/api/menu/save', sendFoodDatas[0],
-        {
-            headers: {
-                Authorization: `Bearer ${access_token}`
+            {
+                headers: {
+                    Authorization: `Bearer ${access_token}`
+                }
             }
-        }
-        
+
         )
             .then((res) => {
                 setMealType('');
@@ -330,9 +319,9 @@ const DialogMenu = (props) => {
                                 </span>
                             </div>
                         ))
-                        ) : (
-                            <p>식단에 항목을 추가하세요.</p>
-                        )
+                    ) : (
+                        <p>식단에 항목을 추가하세요.</p>
+                    )
                     }
                 </div>
 

@@ -2,6 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { APP_NAME } from 'constants/app.constant'
+import ActionLink from 'components/shared/ActionLink'
+
+
 
 const LOGO_SRC_PATH = '/img/logo/'
 
@@ -16,12 +19,14 @@ const Logo = (props) => {
                 ...{ width: logoWidth }
             }}
         >
+            <ActionLink to="/home">
             <img
                 className={imgClass}
                 src={`${LOGO_SRC_PATH}logo-${mode}-${type}.png`}
                 alt={`${APP_NAME} logo`}
                 style={{maxWidth : "200px"}}
             />
+            </ActionLink>
         </div>
     )
 }

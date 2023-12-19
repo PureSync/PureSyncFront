@@ -21,13 +21,17 @@ const ForgotPasswordForm = (props) => {
 
     const onSendMail = async (values, setSubmitting) => {
         setSubmitting(true)
+       
         try {
-            const resp = await apiForgotPassword(values)
-            if (resp.data) {
+            const response = await apiForgotPassword(values)
+            console.log("response::",response)
+            if(response.status!==200){
                 setSubmitting(false)
-                setEmailSent(true)
-                setResponseData(resp.data);
+                setMessage(response?.response?.data?.message || response.toString())
+                return;
             }
+            setResponseData(response);
+            setEmailSent(true)
         } catch (errors) {
             setMessage(errors?.response?.data?.message || errors.toString())
             setSubmitting(false)
@@ -41,12 +45,12 @@ const ForgotPasswordForm = (props) => {
                     <>
                         <h3 className="mb-1">당신의 아이디는</h3>
                         <h2>
-                        {JSON.stringify(responseData.data.memId)} 입니다.
+                        {JSON.stringify(responseData.data.data.memId)} 입니다.
                         </h2>
                     </>
                 ) : (
                     <>
-                        <h3 className="mb-1">아디디를 잊으셨나요?</h3>
+                        <h3 className="mb-1">아이디를 잊으셨나요?</h3>
                         <p>
                             회원가입 시 등록한 이메일을 입력해주세요.
                         </p>
@@ -94,12 +98,13 @@ const ForgotPasswordForm = (props) => {
                                 loading={isSubmitting}
                                 variant="solid"
                                 type="submit"
+                                color = "green-600"
                             >
                                  이메일을 입력하세요
                             </Button>
                             )}
                             <div className="mt-4 text-center">
-                                <ActionLink to={signInUrl}>로그인 하러 가기</ActionLink>
+                                <ActionLink to={signInUrl}>로그인</ActionLink>
                             </div>
                         </FormContainer>
                     </Form>

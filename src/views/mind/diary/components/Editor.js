@@ -11,26 +11,20 @@ import { RichTextEditor } from 'components/shared'
 import { Field, Form, Formik } from 'formik'
 import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
-import axios from 'axios'
 import DOMPurify from 'dompurify';
-import getHeaderCookie from 'utils/hooks/getHeaderCookie'
-import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
+import { apiPostDiary, apiPutDiary } from 'services/MindDiaryService'
+import 'dayjs/locale/ko'
 
 const validationSchema = Yup.object().shape({
-    title: Yup.string().required('Title required'),
-    emotion: Yup.string().required('Emotion required'),
-    content: Yup.string().required('Content required'),
+    dyTitle: Yup.string().required('제목을 입력해주세요'),
+    emoState: Yup.string().required('감정을 선택해주세요'),
+    dyContents: Yup.string().max(1000, '1000자 이하로 입력해주세요')
 })
 
 const Editor = (props) => {
     const navigate = useNavigate()
 
     const diary = props.diary ? props.diary : '';
-
-    //Header Cookie
-    const access_token = getHeaderCookie();
-    let parse_token = parseJwt(access_token);
-    let { memId } = getMemInfoFromToken(parse_token);
 
     const emotionList = [
         { label: "좋음", value: "좋음" },
@@ -63,36 +57,23 @@ const Editor = (props) => {
 
     const onComplete = async (values, setSubmitting) => {
         setSubmitting(true);
-        values.dyContents =  DOMPurify.sanitize(values.dyContents);
+        values.dyContents = DOMPurify.sanitize(values.dyContents);
         const data = {
             dyDate: values.dyDate,
             dyTitle: values.dyTitle,
             dyContents: values.dyContents,
             emoState: values.emoState,
-            memId: values.memId
         }
 
-        try {
-            const response = diary ?
-                await axios.put(process.env.REACT_APP_HOST_URL + `/api/mind/diary/${diary.dySeq}`, data, {
-                    headers: {
-                        Authorization: `Bearer ${access_token}`
-                    }
-                }
-                ) :
-                await axios.post(process.env.REACT_APP_HOST_URL + '/api/mind/diary', data, {
-                    headers: {
-                        Authorization: `Bearer ${access_token}`
-                    }
-                }
-                );
 
-            // 요청이 성공하면 처리할 부분
+        const response = diary ?
+            await apiPutDiary(diary.dySeq, data) :
+            await apiPostDiary(data)
+
+        if (response.data.code === 201 || response.data.code === 200) {
             navigate('/mind/diary');
-        } catch (error) {
-            // 요청이 실패한 경우 에러 처리
-            console.error('Error while saving article:', error);
         }
+
         setSubmitting(false);
     };
 
@@ -105,8 +86,8 @@ const Editor = (props) => {
                     dyContents: diary.dyContents ? diary.dyContents : '',
                     emoState: diary.emoState ? diary.emoState : '',
                     dyDate: diary.dyDate ? diary.dyDate : selectDate,
-                    memId: diary.memId ? diary.memId : memId
                 }}
+                validationSchema={validationSchema}
                 onSubmit={(values, { setSubmitting }) => {
                     onComplete(values, setSubmitting)
                 }}
@@ -115,15 +96,27 @@ const Editor = (props) => {
                     <Form>
                         <FormContainer>
                             <FormItem label="날짜">
-                                <DatePicker
-                                    DatePickerClick={DatePickerClick}
-                                    placeholder={selectDate}
-                                    defaultValue={selectDate}
-                                >
-
-                                </DatePicker>
+                                <Field name="dyDate">
+                                    {({ field, form }) => (
+                                        <DatePicker
+                                            locale = 'ko'
+                                            DatePickerClick={(date) => {
+                                                form.setFieldValue(field.name, date);
+                                                setSelectDate(date);
+                                            }}
+                                            placeholder={values.dyDate}
+                                            defaultValue={values.dyDate}
+                                        />
+                                    )}
+                                </Field>
                             </FormItem>
-                            <FormItem label="제목">
+                            <FormItem 
+                            label="제목"
+                            className="mb-6"
+                            labelClass="!justify-start"
+                            invalid={errors.dyTitle && touched.dyTitle}
+                            errorMessage={errors.dyTitle}
+                            >
                                 <Field
                                     name="dyTitle"
                                     autoComplete="off"
@@ -131,7 +124,11 @@ const Editor = (props) => {
                                     value={values.dyTitle}
                                 />
                             </FormItem>
-                            <FormItem label="감정">
+                            <FormItem label="감정"
+                            className="mb-6"
+                            labelClass="!justify-start"
+                            invalid={errors.emoState && touched.emoState}
+                            errorMessage={errors.emoState}>
                                 <Field name="emoState">
                                     {({ field, form }) => (
                                         <Select
@@ -158,8 +155,8 @@ const Editor = (props) => {
                                 label="내용"
                                 className="mb-0"
                                 labelClass="!justify-start"
-                                invalid={errors.content && touched.content}
-                                errorMessage={errors.content}
+                                invalid={errors.dyContents && touched.dyContents}
+                                errorMessage={errors.dyContents}
                             >
                                 <Field name="dyContents">
                                     {({ field, form }) => (

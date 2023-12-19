@@ -5,13 +5,16 @@ export const initialState = {
     userName: '',
     email: '',
     authority: [],
+    nickName: ''
 }
 
 export const userSlice = createSlice({
     name: 'auth/user',
     initialState,
     reducers: {
-        setUser: (_, action) => action.payload,
+        setUser: (state, action) => {
+            return { ...state, ...action.payload };
+        },
         userLoggedOut: () => initialState,
     },
 })

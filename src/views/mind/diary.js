@@ -6,10 +6,8 @@ import EmotionProgress from './diary/components/EmotionProgress'
 import {
     Loading,
 } from 'components/shared'
-import axios from 'axios'
-import getHeaderCookie from 'utils/hooks/getHeaderCookie'
-import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
 import { useInView } from 'react-intersection-observer';
+import { apiGetDiaryList } from 'services/MindDiaryService'
 
 const Diary = () => {
     const [loading, setLoding] = useState(true);
@@ -19,55 +17,29 @@ const Diary = () => {
     const [page, setPage] = useState(0);
     const [loadingMore, setLoadingMore] = useState(false);
 
-
-    //Header Cookie
-    const access_token = getHeaderCookie();
-    let parse_token = parseJwt(access_token);
-    let { memId } = getMemInfoFromToken(parse_token);
-
     const diaryFetch = () => {
         setLoadingMore(true);
-        // axios를 사용하여 데이터를 가져옴
-        axios.get(process.env.REACT_APP_HOST_URL + `/api/mind/diary/list/${memId}?page=${page}&size=9`,
-            {
-                headers: {
-                    Authorization: `Bearer ${access_token}`
-                }
-            }
-        )
-            .then(response => {
-                // 요청이 성공하면 데이터를 articles 상태로 설정
-                setDiaries([...diaries, ...(response.data.data.mdDiaryList)]);
-                setDiaryCount(diaryCount + response.data.data.count);
-                setLoadingMore(false);
-                setPage((page) => page + 1)
-            })
-            .catch(error => {
-                // 에러 처리
-                console.error('데이터를 불러오는 중 에러 발생:', error);
-                setLoadingMore(false);
-            });
+        apiGetDiaryList(page)
+        .then((res) => {
+            setDiaries([...diaries, ...(res.data.data.mdDiaryList)]);
+            setDiaryCount(diaryCount + res.data.data.count);
+            setLoadingMore(false);
+            setPage((page) => page + 1)
+        })
+        .catch((error) => {})
     }
 
     useEffect(() => {
-        axios.get(process.env.REACT_APP_HOST_URL + `/api/mind/diary/list/${memId}?page=${page}&size=9`,
-            {
-                headers: {
-                    Authorization: `Bearer ${access_token}`
-                }
+        apiGetDiaryList(page)
+        .then(
+            (res) => {
+                setDiaries([...diaries, ...(res.data.data.mdDiaryList)]);
+                setPage((page) => page + 1)
+                setDiaryCount(res.data.data.count);
+                setLoding(false)
             }
         )
-            .then(response => {
-                // 요청이 성공하면 데이터를 articles 상태로 설정
-                setDiaries([...diaries, ...(response.data.data.mdDiaryList)]);
-                setPage((page) => page + 1)
-                setDiaryCount(response.data.data.count);
-                setLoding(false)
-            })
-            .catch(error => {
-                // 에러 처리
-                console.error('데이터를 불러오는 중 에러 발생:', error);
-            });
+        .catch((error) => {});
     }, [])
 
     useEffect(() => {

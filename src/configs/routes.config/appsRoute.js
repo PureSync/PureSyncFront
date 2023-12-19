@@ -26,15 +26,7 @@ const appsRoute = [
         component: React.lazy(() => import('views/body/Sleep')),
         authority: [ADMIN, USER],
     },
-    {
-        key: 'landing',
-        path: `/landing/landing`,
-        component: React.lazy(() => import('views/landing/landing')),
-        authority: [ADMIN, USER],
-        meta: {
-            layout: 'blank'
-        }
-    },
+    
     // 마음
     {
         key: 'mind.diary',
@@ -135,13 +127,6 @@ const appsRoute = [
         authority: [ADMIN, USER],
     },
     // 마이페이지
-    {
-        key: 'mypage',
-        path: `${APP_PREFIX_PATH}/mypage`,
-        component: React.lazy(() => import('views/Mypage2')),
-        authority: [ADMIN, USER],
-    },
-    //작업용
    
 // 기존 -----------------------------------------------------------------------------------------
 
@@ -338,31 +323,15 @@ const appsRoute = [
     },
     {
         key: 'appsAccount.settings',
-        path: `${APP_PREFIX_PATH}/account/settings/:tab`,
+        // path: `${APP_PREFIX_PATH}/account/settings/:tab`,
+        path: `/account/settings/:tab`,
         component: React.lazy(() => import('views/account/Settings')),
-        authority: [ADMIN, USER],
+        // authority: [ADMIN, USER],
+        authority : [],
         meta: {
-            header: 'Settings',
+            header: '회원 정보',
             headerContainer: true,
         },
-    },
-    {
-        key: 'appsAccount.invoice',
-        path: `${APP_PREFIX_PATH}/account/invoice/:id`,
-        component: React.lazy(() => import('views/account/Invoice')),
-        authority: [ADMIN, USER],
-    },
-    {
-        key: 'appsAccount.activityLog',
-        path: `${APP_PREFIX_PATH}/account/activity-log`,
-        component: React.lazy(() => import('views/account/ActivityLog')),
-        authority: [ADMIN, USER],
-    },
-    {
-        key: 'appsAccount.kycForm',
-        path: `${APP_PREFIX_PATH}/account/kyc-form`,
-        component: React.lazy(() => import('views/account/KycForm')),
-        authority: [ADMIN, USER],
     },
 ]
 

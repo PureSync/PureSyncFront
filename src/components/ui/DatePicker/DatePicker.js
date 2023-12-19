@@ -130,10 +130,12 @@ const DatePicker = forwardRef((props, ref) => {
         )
         closePickerOnChange && closeDropdown()
         window.setTimeout(() => inputRef.current?.focus(), 0);
-        //console.log( date );
-        //console.log(inputState);
+        console.log( date );  //Tue Nov 28 2023 00:00:00 GMT+0900
+        console.log(finalLocale) //en
+        console.log(dateFormat) //YYYY-MM-DD
+        console.log(inputState); //2023-11-28
         props.DatePickerClick(capitalize(dayjs(date).locale(finalLocale).format(dateFormat)));
-        //alert("**");
+        // alert("**");
     }
 
     const handleClear = () => {
