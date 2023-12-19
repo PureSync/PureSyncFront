@@ -4,7 +4,7 @@ import Axios from 'axios'
 export async function apiSignIn(data) {
 
     return ApiService.fetchData({
-        url: 'http://localhost:9000/api/member/login',
+        url: process.env.REACT_APP_HOST_URL + '/api/member/login',
         method: 'post',
         data,
     })
@@ -19,7 +19,7 @@ export async function apiSignUp(data) {
 }
 
 export async function apiForgotPassword(data) {
-    const GET_URL = `http://localhost:9000/api/member/searchId/${data.email}`;
+    const GET_URL = process.env.REACT_APP_HOST_URL + `/api/member/searchId/${data.email}`;
     try{
         const response = await Axios.get(GET_URL)
         return response;
@@ -30,7 +30,7 @@ export async function apiForgotPassword(data) {
 
 export async function apiResetPassword(data) {
     console.log(data)
-    const POST_URL = `http://localhost:9000/api/member/searchPassword`
+    const POST_URL = process.env.REACT_APP_HOST_URL + `/api/member/searchPassword`
    try{
     const response = await Axios.post(POST_URL,data);
     return response

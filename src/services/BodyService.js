@@ -7,7 +7,7 @@ let parse_token = parseJwt(access_token);
 
 export async function apiGetSleepCalendar() {
     return ApiService.fetchData({
-        url: 'http://localhost:9000/api/sleep/list',
+        url: process.env.REACT_APP_HOST_URL + '/api/sleep/list',
         method: 'get',
       headers: {
         'Content-Type': 'application/json',

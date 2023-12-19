@@ -8,7 +8,7 @@ let parse_token = parseJwt(access_token);
 // export async function apiGetBoardData() {
 //     console.log("*****************8");
 //     return ApiService.fetchData({
-//         url: 'http://localhost:9000/api/board',
+//         url: process.env.REACT_APP_HOST_URL + '/api/board',
 //         method: 'get',
 //         headers: {
 //             Authorization: `Bearer ${access_token}`
@@ -21,7 +21,7 @@ export async function apiGetArticle(params) {
     console.log( params.id );
     //console.log( "****************************************8" );
     return ApiService.fetchData({
-        url: `http://localhost:9000/api/board/${params.id}`,
+        url: process.env.REACT_APP_HOST_URL + `/api/board/${params.id}`,
         method: 'get',
         params,
         headers: {
@@ -32,7 +32,7 @@ export async function apiGetArticle(params) {
 
 export async function apiGetOthersArticleList(params) {
     return ApiService.fetchData({
-        url: `http://localhost:9000/api/board/${params.id}/comments`,
+        url: process.env.REACT_APP_HOST_URL + `/api/board/${params.id}/comments`,
         method: 'get',
         params,
         headers: {
@@ -60,7 +60,7 @@ export async function apiGetCrmCalendar() {
 export async function apiGetCrmCustomers(data) {
 
     // let result = await ApiService.fetchData({
-    //     url: 'http://localhost:9000/api/board',
+    //     url: process.env.REACT_APP_HOST_URL + '/api/board',
     //     method: 'get',
     //     data,
     // });
@@ -68,7 +68,7 @@ export async function apiGetCrmCustomers(data) {
     // console.log( result);
 
     return  ApiService.fetchData({
-        url: 'http://localhost:9000/api/board',
+        url: process.env.REACT_APP_HOST_URL + '/api/board',
         method: 'get',
         headers: {
             Authorization: `Bearer ${access_token}`
@@ -99,7 +99,7 @@ export async function apiGetCrmCustomerDetails(params) {
     console.log( params.id );
     console.log( "****************************************8" );
     return ApiService.fetchData({
-        url: `http://localhost:9000/api/board/${params.id}`,
+        url: process.env.REACT_APP_HOST_URL + `/api/board/${params.id}`,
         method: 'get',
         params,
     })
