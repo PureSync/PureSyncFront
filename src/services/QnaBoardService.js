@@ -23,6 +23,37 @@ export async function apiGetQnaOthersArticleList(params) {
     })
 }
 
+export async function apiPostArticle(data) {
+    return ApiService.fetchData({
+        url: process.env.REACT_APP_HOST_URL + `/api/qnaBoard`,
+        method: 'post',
+        data: data,
+        headers : {
+            'Content-Type': 'multipart/form-data',
+        }
+    })
+}
+
+export async function apiPutArticle(params, data) {
+    return ApiService.fetchData({
+        url: process.env.REACT_APP_HOST_URL + `/api/qnaBoard/${params}`,
+        method: 'put',
+        data: data,
+        headers : {
+            'Content-Type': 'multipart/form-data',
+        }
+    })
+}
+
+export async function apiDeleteArticle(params) {
+    return ApiService.fetchData({
+        url: process.env.REACT_APP_HOST_URL + `/api/qnaBoard/${params}`,
+        method: 'delete'
+    })
+}
+
+
+
 
 export async function apiGetQnaCrmDashboardData(data) {
     return ApiService.fetchData({

@@ -22,7 +22,7 @@ const BoardListHeader = () => {
                 </div>
             </div>
 
-            <Button size="sm" onClick={() => navigate('/board/write')} variant="solid">
+            <Button size="sm" onClick={() => navigate('/qnaboard/write')} variant="solid">
                 글쓰기
             </Button>
         </div>
