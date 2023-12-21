@@ -14,7 +14,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { Button } from 'components/ui'
 import { HiOutlineClock, HiOutlineCog, HiOutlinePencil, HiOutlineInboxIn, HiOutlineTrash, HiOutlineHeart } from 'react-icons/hi'
 import { getboardFile } from 'services/DashboardService'
-import { apiDeleteArticle, apiGetMyLikes } from 'services/BoardService'
+import { apiDeleteArticle } from 'services/QnaBoardService'
 import axios from 'axios'
 
 
