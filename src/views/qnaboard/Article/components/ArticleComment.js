@@ -59,7 +59,7 @@ const ArticleComment = ({ data }) => {
               <div className="flex gap-2">
                 <span className="flex items-center gap-2">
                   <HiOutlineClock className="text-lg" />
-                  <span>{qnaComment.cmtWdate}</span>
+                  <span>{qnaComment.qnaCmtWdate}</span>
                 </span>
                 {qnaComment.qnaCmtStatus === 1 && qnaComment.qnaCmtWriter === userName && (
                   <>
