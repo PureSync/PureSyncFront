@@ -27,10 +27,10 @@ const ArticleContent = ({ articleId }) => {
     )
     console.log(userName);
     const article = useSelector(
-        (state) => state.knowledgeBaseArticle.data.article
+        (state) => state.knowledgeBaseQnaArticle.data.qnaArticle
     )
     const loading = useSelector(
-        (state) => state.knowledgeBaseArticle.data.loading
+        (state) => state.knowledgeBaseQnaArticle.data.loading
     )
     console.log(article);
     const { search } = useLocation()
