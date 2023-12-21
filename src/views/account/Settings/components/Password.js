@@ -29,16 +29,16 @@ const validationSchema = Yup.object().shape({
 const Password = () => {
     const onFormSubmit = async (values, {setSubmitting, resetForm}) => {
         const { oldPassword, newPassword } = values
-        const response = await apiPutPassword(JSON.stringify({ oldPassword, newPassword }))
-        if (response.data.code == 200) {
-            toast.push(<Notification title={'비밀번호가 변경되었습니다.'} type="success" />, { placement: 'top-center' });
-            resetForm();
-            setSubmitting(false);
-            return;
-        }
-        
-        toast.push(<Notification title={'비밀번호가 일치하지 않습니다.'} type="danger" />, { placement: 'top-center' });
-        return;
+        await apiPutPassword(JSON.stringify({ oldPassword, newPassword }))
+            .then(() => {
+                toast.push(<Notification title={'비밀번호가 변경되었습니다.'} type="success" />, { placement: 'top-center' });
+                resetForm();
+            })
+            .catch((err) => {
+                toast.push(<Notification title={'비밀번호가 일치하지 않습니다.'} type="danger" />, { placement: 'top-center' });
+            })
+
+        setSubmitting(false);
     }
 
     return (

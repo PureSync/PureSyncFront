@@ -31,7 +31,6 @@ const ArticleContent = () => {
                 setNeutral(response.data.data.neutral);
                 setLoding(false);
             })
-        .catch((error) => {})
     }, []);
 
     const onClickDelete = () => {

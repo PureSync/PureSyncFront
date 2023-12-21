@@ -1,12 +1,10 @@
 import { useEffect } from "react";
-import axios from "axios";
+import { apiPostVisitor } from "services/VisitorService";
 
 const Visit = () => {
     useEffect(
         () => {
-            axios.post('http://localhost:9000/api/visitor')
-            .then()
-            .catch((res) => console.log(res))
+            apiPostVisitor()
         },[]
     )
 }

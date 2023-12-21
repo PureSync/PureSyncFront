@@ -27,7 +27,11 @@ export const UserDropdown = ({ className }) => {
     //  회원 프로필 수정되면 Avatar에 src={avatar} 추가, usename 주석 풀기
     const UserAvatar = (
         <div className={classNames(className, 'flex items-center gap-2')}>
-            <Avatar size={32} shape="circle" icon={<HiOutlineUser />} src={AWS_IMG_PATH + avatar} />
+            {avatar == undefined ? 
+                <Avatar size={32} shape="circle" icon={<HiOutlineUser />}/>:
+                <Avatar size={32} shape="circle" src={AWS_IMG_PATH + avatar} />
+            }
+            
             <div className="hidden md:block">
                 <div className="font-bold">{userName}</div>
             </div>
@@ -44,7 +48,10 @@ export const UserDropdown = ({ className }) => {
             >
                 <Dropdown.Item variant="header">
                     <div className="py-2 px-3 flex items-center gap-2">
-                        <Avatar shape="circle" icon={<HiOutlineUser />} src={AWS_IMG_PATH + avatar} />
+                    {avatar == undefined ? 
+                        <Avatar size={32} shape="circle" icon={<HiOutlineUser />}/>:
+                        <Avatar size={32} shape="circle" src={AWS_IMG_PATH + avatar} />
+                    }
                         <div>
                             <div className="font-bold text-gray-900 dark:text-gray-100">
                             {userName}

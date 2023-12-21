@@ -2,17 +2,11 @@ import React, { useState, useRef, forwardRef, useEffect } from 'react'
 import { DatePicker, Button } from 'components/ui'
 import Menu from 'components/body/menu'
 import Exercise from 'components/body/exercise'
-import Axios from 'axios'
 import Summry from 'components/body/summary'
-import getHeaderCookie from 'utils/hooks/getHeaderCookie'
-import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
+import { apiGetMenu, apiDeleteMenu, apiGetExercise, apiDeleteExercise, apiGetSummary } from 'services/BodyRecord'
 
 const BodyMenu = () => {
 
-    //Header Cookie
-    const access_token = getHeaderCookie();
-    let parse_token = parseJwt(access_token);
-    let { memId, memSeq } = getMemInfoFromToken(parse_token);
 
     // 날짜 계산 ----------------------------------------------------------------
     let today = new Date();
@@ -43,19 +37,13 @@ const BodyMenu = () => {
     const [dailyTotalCalories, setDailyTotalCalories] = useState(0);
     const [menuRefresh, setMenuRefresh] = useState(false);
 
+    const sendMenuData = {
+        menu_date: selectDate,
+    };
+
     // 식단 리스트 불러오기
     const callMenu = () => {
-        if (access_token === "") return;
-        Axios.get(process.env.REACT_APP_HOST_URL + '/api/menu/list', {
-            params: {
-                menu_date: selectDate,
-            }, 
-            withCredentials: false,
-            headers: {
-                Authorization: `Bearer ${access_token}`
-            }
-        })
-
+        apiGetMenu(sendMenuData)
             .then((res) => {
                 const menuList = res.data.data.menuList;
                 let breakfastCalories = 0;
@@ -96,23 +84,17 @@ const BodyMenu = () => {
             .catch((error) => {
                 console.error(error);
             });
-
     }
+
+
 
     // 식단 삭제
     const menuDelete = (menu_seq) => {
-        if (access_token === "") return;
-        Axios.post(process.env.REACT_APP_HOST_URL + '/api/menu/delete', {
+        const deleteMenuData = {
             menuSeq: menu_seq
-        }, 
-        {
-            withCredentials: true, // Include credentials (cookies)
-            headers: {
-                Authorization: `Bearer ${access_token}`
-            }
-        })
+        };
+        apiDeleteMenu(deleteMenuData)
             .then((res) => {
-                //alert("삭제 메뉴" + menu_seq);
                 setMenuRefresh(!menuRefresh);
             })
             .catch((error) => {
@@ -125,17 +107,13 @@ const BodyMenu = () => {
     const [totalExerciseCalories, setTotalExerciseCalories] = useState(0);
     const [exerciseRefresh, setExerciseRefresh] = useState(false);
 
+    const sendExerciseData = {
+        el_date: selectDate,
+    };
+
+
     const callExercise = () => {
-        if (access_token === "") return;
-        Axios.get(process.env.REACT_APP_HOST_URL + '/api/exercise/list', {
-            params: {
-                el_date: selectDate,
-            }, 
-            withCredentials: false, 
-            headers: {
-                Authorization: `Bearer ${access_token}`
-            }
-        })
+        apiGetExercise(sendExerciseData)
             .then((res) => {
                 setExerciseData(res.data.data.exerciseList);
 
@@ -156,16 +134,10 @@ const BodyMenu = () => {
 
     //운동 삭제
     const exerciseDelete = (el_seq) => {
-        if (access_token === "") return;
-        Axios.post(process.env.REACT_APP_HOST_URL + '/api/exercise/delete', {
-            elSeq: el_seq,
-        }, 
-        {
-            withCredentials: true, // Include credentials (cookies)
-            headers: {
-                Authorization: `Bearer ${access_token}`
-            }
-        })
+        const deleteExerciseData = {
+            elSeq: el_seq
+        };
+        apiDeleteExercise(deleteExerciseData)
             .then((res) => {
                 setExerciseRefresh(!exerciseRefresh);
             })
@@ -181,19 +153,14 @@ const BodyMenu = () => {
     const [menuWhenData, setMenuWhenData] = useState([]);   // 아점저간 각 칼로리
     const [bodyBaseData, setBodyBaseData] = useState([]);   // 기초대사량
 
+    const sendSummaryData = {
+        menu_date: selectDate,
+        el_date: selectDate,
+    };
+
     // 데이터 불러오기
     const callSummary = () => {
-        if (access_token === "") return;
-        Axios.get(process.env.REACT_APP_HOST_URL + '/api/summary/list', {
-            params: {
-                menu_date: selectDate,
-                el_date: selectDate,
-            }, 
-            withCredentials: false, 
-            headers: {
-                Authorization: `Bearer ${access_token}`
-            }
-        })
+        apiGetSummary(sendSummaryData)
             .then((res) => {
                 const menuTotalWhenList = res.data.data.menuTotalWhenList;
                 const getBodyBase = res.data.data.getBodyBase;
@@ -223,7 +190,7 @@ const BodyMenu = () => {
             });
     };
 
-    // body -------------------------------------------------------------------------------------------------------
+    // body useEffect -------------------------------------------------------------------------------------------------------
     useEffect(() => {
         callMenu();
         callExercise();

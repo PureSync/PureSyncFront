@@ -40,4 +40,3 @@ jobs:
         script: |
           /home/ubuntu/docker/cleaner.sh
           sudo docker compose -f /home/${{ secrets.WAS_USERNAME }}/docker/docker-compose.yml up -d
-          

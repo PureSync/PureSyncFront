@@ -2,7 +2,6 @@ import React from 'react'
 import {
     Input,
     Button,
-    Checkbox,
     FormItem,
     FormContainer,
     Alert,
@@ -15,8 +14,14 @@ import useAuth from 'utils/hooks/useAuth'
 
 
 const validationSchema = Yup.object().shape({
-    memId: Yup.string().required('ID를 입력해주세요.'),
-    memPassword: Yup.string().required('PASSWORD를 입력해주세요.'),
+    memId: Yup.string().required('ID를 입력해주세요.')
+    .matches(/^[a-zA-Z0-9]*$/, '올바른 아이디어야 합니다.')
+    .min(8, '아이디는 최소 8글자 이상입니다..')
+    .max(16, '아이디는 최대 16글자 이하입니다..'),
+    memPassword: Yup.string()
+    .required('비밀번호를 입력해주세요.')
+    .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, '올바른 비밀번호를 입력해주세요.')
+    .min(8, '비밀번호는 최소 8글자 이상입니다.'),
     rememberMe: Yup.bool(),
 })
 
@@ -94,7 +99,7 @@ const SignInForm = (props) => {
                                     component={PasswordInput}
                                 />
                             </FormItem>
-                            <div className="ml-auto">
+                            {/* <div className="ml-auto">
                                 <Field
                                     className="mb-0"
                                     name="rememberMe"
@@ -103,7 +108,7 @@ const SignInForm = (props) => {
                                     color="green-600"
                                     children="로그인 정보 저장"
                                 />
-                            </div>
+                            </div> */}
                             <Button
                                 block
                                 loading={isSubmitting}
@@ -127,7 +132,7 @@ const SignInForm = (props) => {
                                         </ActionLink>
                                     </div>
                                 </div>
-                                <div className="mt-2">    
+                                <div className="mt-2">
                                     <span>계정이 없으신가요? </span>
                                     <ActionLink to={signUpUrl}>회원가입</ActionLink>
                                 </div>

@@ -26,10 +26,10 @@ const Dashboard = () => {
     
     const defaultData = useSelector((state) => state.memberDashboard.data.dashboardData.default);
     const menuList = useSelector((state) => state.memberDashboard.data.dashboardData.menuList);
-    const emotionList = useSelector((state) => state.memberDashboard.data.dashboardData.emotionList);
     const exerciseList = useSelector((state) => state.memberDashboard.data.dashboardData.exercise);
     const sleepList = useSelector((state) => state.memberDashboard.data.dashboardData.sleep);
     const loading = useSelector((state) => state.memberDashboard.data.loading);
+
     useEffect(() => {
         fetchData();
         fetchPositiveData();
@@ -40,12 +40,12 @@ const Dashboard = () => {
     }
 
     const fetchPositiveData = async () => {
-        try {
-            const response = await getPositive();
-            setPositive(response.data.data.Positive);
-        } catch (error) {
-            console.error("Error positive data:", error);
-        }
+        await getPositive()
+            .then((res) => {
+                console.log(res.data);
+                setPositive(res.data.data.Positive)}
+            )
+            .catch((error) => {console.log("에러 발생" + error)})
     }
 
     const DatePickerClick = (date) => {

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import ActionLink from 'components/shared/ActionLink'
 import axios from 'axios';
 import { Card } from 'components/ui'
 import { Loading } from 'components/shared'
@@ -31,7 +30,9 @@ const Test = () => {
                         Authorization: `Bearer ${access_token}`
                     }
                 });
-                const stressTotalScore = stressResponse.data.data.allStressAnswer.total;
+
+                const stressTotalScore = stressResponse.data.data.allStressAnswer ? stressResponse.data.data.allStressAnswer.total : null;
+                
                 setStressScore(stressTotalScore);
 
                 // Depression API 호출
@@ -40,7 +41,7 @@ const Test = () => {
                         Authorization: `Bearer ${access_token}`
                     }
                 });
-                const depressionTotalScore = depressionResponse.data.data.allDepressionAnswer.total;
+                const depressionTotalScore = depressionResponse.data.data.allDepressionAnswer ? depressionResponse.data.data.allDepressionAnswer.total : null ;
                 setDepressionScore(depressionTotalScore);
                 setLoading(false);
             } catch (error) {

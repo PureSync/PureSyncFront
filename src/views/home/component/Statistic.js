@@ -213,7 +213,7 @@ const Statistic = ({ data }) => {
                         <div>
                             <div className="flex gap-1">
                                 <StarRate data={data.score} />
-                                <span style={{'white-space': 'nowrap'}}>[{data.score}점]</span>
+                                <span style={{'whiteSpace': 'nowrap'}}>[{data.score}점]</span>
                             </div>
                             <p className="font-semibold">몸과 마음 점수</p>
                         </div>

@@ -7,18 +7,10 @@ import { motion } from 'framer-motion';
 import { theme } from 'twin.macro';
 import useWindowSize from '../hooks/useWindowSize';
 import { Button, Input } from 'components/ui';
-import Axios from 'axios';
-import getHeaderCookie from 'utils/hooks/getHeaderCookie'
-import {parseJwt, getMemInfoFromToken} from 'utils/hooks/parseToken'
-
-
+import { apiGetAllExercise, apiWriteExercise } from 'services/BodyRecord';
 
 const DialogExercise = (props) => {
 
-    //Header Cookie
-    const access_token = getHeaderCookie();
-    let parse_token = parseJwt(access_token);
-    let  { memId, memSeq } = getMemInfoFromToken(parse_token);
 
     const currentSize = useWindowSize();
 
@@ -122,10 +114,11 @@ const DialogExercise = (props) => {
         } else {
             setInputError(false); // 검색어 길이가 2자 이상인 경우 inputError를 false로 설정
             
-            Axios.get( process.env.REACT_APP_HOST_URL + '/api/exercise/exerciseList', {
-                params: { "exerciseName": searchValue },
-                withCredentials: true
-            })
+            const sendExerciseData = {
+                exerciseName : searchValue
+            };
+
+            apiGetAllExercise(sendExerciseData)
                 .then((res) => {
                     setSearchResults(res.data.data.allExercise);
                     setLoding(true);
@@ -166,13 +159,7 @@ const DialogExercise = (props) => {
             sendExerciseDatas.push(exerciseInfo);
         });
 
-        Axios.post(process.env.REACT_APP_HOST_URL + '/api/exercise/save', sendExerciseDatas[0],
-        {
-            headers: {
-                Authorization: `Bearer ${access_token}`
-            }
-        }
-        )
+        apiWriteExercise(sendExerciseDatas[0])
             .then((res) => {
                 setSearchValue('');
                 setSearchResults([]);

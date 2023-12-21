@@ -20,6 +20,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom'
 import getHeaderCookie from 'utils/hooks/getHeaderCookie'
 import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
+import { apiPostSleepCalendar, apiPutSleepCalendar,apiDeleteSleepCalendar } from 'services/BodyService';
 import 'dayjs/locale/ko'
 
 const { DateTimepicker } = DatePicker;
@@ -28,8 +29,8 @@ const { Control } = components;
 
 const { useUniqueId } = hooks;
 const access_token = getHeaderCookie();
-    let parse_token = parseJwt(access_token);
-    let { memId } = getMemInfoFromToken(parse_token);
+let parse_token = parseJwt(access_token);
+let { memId } = getMemInfoFromToken(parse_token);
 
 // 캘린더 이벤트 색상 목록 가져오기
 const colorKeys = Object.keys(eventColors);
@@ -42,11 +43,10 @@ const colorOptions = colorKeys.map((color) => {
 const CustomSelectOption = ({ innerProps, label, data, isSelected }) => {
     return (
         <div
-            className={`flex items-center justify-between p-2 ${
-                isSelected
+            className={`flex items-center justify-between p-2 ${isSelected
                     ? 'bg-gray-100 dark:bg-gray-500'
                     : 'hover:bg-gray-50 dark:hover:bg-gray-600'
-            }`}
+                }`}
             {...innerProps}
         >
             <div className="flex items-center">
@@ -85,11 +85,11 @@ const EventDialog = ({ submit }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     // 다이얼로그 상태와 선택된 이벤트 정보를 가져오기
-     const open = useSelector((state) => state.sleepCalendar.state.dialogOpen);
-     const selected = useSelector((state) => state.sleepCalendar.state.selected);
+    const open = useSelector((state) => state.sleepCalendar.state.dialogOpen);
+    const selected = useSelector((state) => state.sleepCalendar.state.selected);
 
-     console.log( selected );
-     const newId = useUniqueId('event-');
+    console.log(selected);
+    const newId = useUniqueId('event-');
 
     // 분류 옵션 정의
     const categoryOptions = [
@@ -101,11 +101,12 @@ const EventDialog = ({ submit }) => {
     const handleDialogClose = () => {
         dispatch(closeDialog());
     };
-    
-   const selectedId = selected.id;
+
+
+    const selectedId = selected.id;
     // 폼 제출 핸들러
-    const handleSubmit  =  (values, setSubmitting) => {
-        
+    const handleSubmit = (values, setSubmitting) => {
+
         console.log('handleSubmit 실행됨', values);
         setSubmitting(false);
         const sleepColor = values.color === 'yellow' ? 0 : 1;
@@ -115,54 +116,48 @@ const EventDialog = ({ submit }) => {
             title: "수면기록", // 제목
             sleepGodate: (values.startDate), // 취침 시각
             sleepCategory: sleepColor, // 이벤트 색상
-            sleepWudate : (values.endDate),
-        };     
-        const url = eventData.id ? `http://localhost:9000/api/sleep/${eventData.id}` : 'http://localhost:9000/api/sleep/save';
+            sleepWudate: (values.endDate),
+        };
 
-try {
-  const response = eventData.id
-    ? axios.put(url, eventData, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${access_token}`
+        if (eventData.id) {
+            apiPutSleepCalendar(eventData.id, JSON.stringify(
+                eventData
+            ))
+                .then((res) => {
+                    navigate("/body/sleep")
+                    window.location.reload();
+                    console.log(eventData);
+                    dispatch(closeDialog());
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        } else {
+            apiPostSleepCalendar(JSON.stringify(
+                eventData
+            ))
+                .then((res) => {
+                    navigate("/body/sleep")
+                    window.location.reload();
+                    console.log(eventData);
+                    dispatch(closeDialog());
+                })
+                .catch(error => {
+                    console.log(error)
+                })
         }
-      })
-    : axios.post(url, eventData, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${access_token}`
-        }
-      });
-            // Axios를 사용하여 서버로 데이터 전송,
-            // 서버 요청이 성공하면 콘솔에 응답 확인 및 상태 업데이트
-            console.log(eventData);
-            console.log(eventData.id);
-            console.log("category",eventData.sleepCategory);
-            console.log('서버 응답:', response);
-            
+    }
 
-            navigate("/body/sleep")
-            window.location.reload();
-        } catch (error) {
-            
-            console.error('서버 요청 실패:', error);
-        }
-        console.log(eventData);
-        dispatch(closeDialog());
-    };
     const handleDelete = async () => {
-       
-            try {
-                const response = await axios.delete(`http://localhost:9000/api/sleep/delete/${selected.id}`);
-                console.log(response);
-                    
-                navigate("/body/sleep");
+        apiDeleteSleepCalendar(selected.id)
+            .then((res) => {
+                navigate("/body/sleep")
                 window.location.reload();
-            } catch (error) {
-                console.error('서버 요청 실패:', error);
-                      
-            dispatch(closeDialog());
-        }
+                dispatch(closeDialog());
+            })
+            .catch(error => {
+                console.log(error)
+            })
     };
     return (
         <Dialog
@@ -186,23 +181,23 @@ try {
                     }}
                     // validationSchema={validationSchema}
                     onSubmit={(values, { setSubmitting }) => {
-                        const isoStartDateString =values.startDate.toISOString();
-                        const isoEndDateString =values.endDate.toISOString();
+                        const isoStartDateString = values.startDate.toISOString();
+                        const isoEndDateString = values.endDate.toISOString();
                         const isoStartDate = new Date(isoStartDateString);
                         const isoEndDate = new Date(isoEndDateString);
                         const formattedStartDate = `${isoStartDate.getFullYear()}-${String(isoStartDate.getMonth() + 1).padStart(2, '0')}-${String(isoStartDate.getDate()).padStart(2, '0')}T${String(isoStartDate.getHours()).padStart(2, '0')}:${String(isoStartDate.getMinutes()).padStart(2, '0')}:${String(isoStartDate.getSeconds()).padStart(2, '0')}`;
                         const formattedEndDate = `${isoEndDate.getFullYear()}-${String(isoEndDate.getMonth() + 1).padStart(2, '0')}-${String(isoEndDate.getDate()).padStart(2, '0')}T${String(isoEndDate.getHours()).padStart(2, '0')}:${String(isoEndDate.getMinutes()).padStart(2, '0')}:${String(isoEndDate.getSeconds()).padStart(2, '0')}`;
                         const processedData = {
                             startDate: formattedStartDate,
-                            endDate : formattedEndDate,
+                            endDate: formattedEndDate,
                             // endDate: values.endDate.toISOString(),
-                            color : values.color
+                            color: values.color
 
                             // 추가적인 데이터 가공 가능
                         };
                         console.log(values.startDate.toLocaleString());
                         handleSubmit(processedData, setSubmitting);
-                        
+
                     }}
                 >
                     {({ values, touched, errors, resetForm }) => (
@@ -300,11 +295,11 @@ try {
                                                 // 선택된 값이 현재 색상인지 확인
                                                 value={
                                                     values.color
-                                                      ? values.color === 'yellow'
-                                                        ? { value: values.color, label: '낮잠' }
-                                                        : { value: values.color, label: '밤잠' }
-                                                      : null
-                                                  }
+                                                        ? values.color === 'yellow'
+                                                            ? { value: values.color, label: '낮잠' }
+                                                            : { value: values.color, label: '밤잠' }
+                                                        : null
+                                                }
                                                 onChange={(option) => form.setFieldValue(field.name, option.value)}
                                                 components={{
                                                     Option: CustomSelectOption,
@@ -319,7 +314,7 @@ try {
                                         등록
                                     </Button>
                                     {selected.type !== 'NEW' && (
-                                        <Button variant="outline"  type="button"   className="ml-2 text-red-500"  onClick={handleDelete}>
+                                        <Button variant="outline" type="button" className="ml-2 text-red-500" onClick={handleDelete}>
                                             삭제
                                         </Button>
                                     )}

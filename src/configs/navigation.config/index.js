@@ -1,16 +1,11 @@
-import appsNavigationConfig from './apps.navigation.config'
-import uiComponentNavigationConfig from './ui-components.navigation.config'
-import pagesNavigationConfig from './pages.navigation.config'
-import authNavigationConfig from './auth.navigation.config'
-import docNavigationConfig from './doc.navigation.config'
+import bodyNavigationConfig from './body.navigation.config'
+import mindNavigationConfig from './mind.navigation.config'
+import boardNavigationConfig from './board.navigation.config'
 
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 const navigationConfig = [
-    ...appsNavigationConfig,
-    ...uiComponentNavigationConfig,
-    ...pagesNavigationConfig,
-    ...authNavigationConfig,
-    ...docNavigationConfig,
+    ...bodyNavigationConfig,
+    ...mindNavigationConfig,
+    ...boardNavigationConfig,
 ]
 
 export default navigationConfig

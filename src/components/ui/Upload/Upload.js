@@ -33,6 +33,7 @@ const Upload = React.forwardRef((props, ref) => {
 
     const fileInputField = useRef(null)
     const [files, setFiles] = useState(fileList)
+    
     const [dragOver, setDragOver] = useState(false)
 
     const { themeColor, primaryColorLevel } = useConfig()
@@ -117,7 +118,7 @@ const Upload = React.forwardRef((props, ref) => {
         if (!draggable && !children) {
             return (
                 <Button disabled={disabled} onClick={(e) => e.preventDefault()}>
-                    Upload
+                    파일 선택
                 </Button>
             )
         }

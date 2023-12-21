@@ -6,12 +6,10 @@ import 'aos/dist/aos.css';
 
 import './css/theme.css';
 
-
-import { FiGithub } from 'react-icons/fi'
+import { FaGithub } from "react-icons/fa";
 import Visit from 'visit'
 
 function Landing() {
-  // import('./css/theme.css');
 
   useEffect(() => {
     
@@ -21,17 +19,6 @@ function Landing() {
 
   }, []);
 
-  // const location = useLocation();
-  // console.log(location);
-
-  // // 특정 경로에서만 스타일을 로드
-  // if (location.pathname === '/landing') {
-  //   require('./css/theme.css');
-  //   require('./css/theme.min.css');
-  // }
-
-
-
   return (
     <div>
       <Visit />
@@ -39,13 +26,12 @@ function Landing() {
         <div className="w-100 h-100 overflow-hidden bg-gray-100" id="top">
           <div className="containernp position-relative">
             <div className="col-12 col-lg-8 mt-0 h-100 position-absolute top-0 end-0 bg-cover"
-              // background-image: url(/img/main.png);"></div>
               data-aos="fade-left" style={{ backgroundImage: `url(/img/interior11.webp)` }}></div>
             <div className="row">
               <div className="col-lg-7 py-vh-6 position-relative ps-5" data-aos="fade-right">
                 <h1 className="display-1 fw-bold mt-5">PureSync</h1>
-                <p className="lead">몸과 마음의 건강을 챙기는 첫 걸음은 기록입니다. 몸과 마음의 건강을 챙기는 겟생, pureSync와 함께하고 나만의 더 나은 길을 찾아보세요! 지금 시작하세요.</p>
-                <a href='/sign-in' className="btn btn-dark btn-xl shadow me-3 rounded-0 my-5" >로그인 </a>
+                <p className="lead" style={{wordBreak: "keep-all"}}>몸과 마음의 건강을 챙기는 첫 걸음은 기록입니다. 몸과 마음의 건강을 챙기는 겟생, pureSync와 함께하고 나만의 더 나은 길을 찾아보세요! 지금 시작하세요.</p>
+                <a href='/sign-in' className="btn btn-success px-5 py-3 me-3 rounded-2 my-5" >로그인 </a>
               </div>
             </div>
           </div>
@@ -78,24 +64,24 @@ function Landing() {
           </div>
         </div>
 
-        <div class="py-vh-5 w-100 overflow-hidden" id="numbers">
-          <div class="container">
-            <div class="row d-flex justify-content-between align-items-center">
-              <div class="col-lg-5">
-                <h3 class="py-5 border-top border-dark" data-aos="fade-right">왜 PureSync 일까요?</h3>
+        <div className="py-vh-5 w-100 overflow-hidden" id="numbers">
+          <div className="container">
+            <div className="row d-flex justify-content-between align-items-center">
+              <div className="col-lg-5">
+                <h3 className="py-5 border-top border-dark" data-aos="fade-right">왜 PureSync 일까요?</h3>
               </div>
-              <div class="col-lg-6">
-                <div class="row">
-                  <div class="col-12">
-                    <h2 class="display-6 mb-5" data-aos="fade-down">몸 건강과 마음 건강을 함께 챙기세요</h2>
+              <div className="col-lg-6">
+                <div className="row">
+                  <div className="col-12">
+                    <h2 className="display-6 mb-5" data-aos="fade-down">몸 건강과 마음 건강을 함께 챙기세요</h2>
                   </div>
-                  <div class="col-lg-6" data-aos="fade-up">
-                    <div class="display-1 fw-bold py-4">88%</div>
-                    <p class="text-black-50">'건강' 개념은 이제 신체적인 건강뿐만 아니라 마음의 건강까지를 포함하며, 관심도가 상당히 증가하고 있습니다. 작년에 비해, 청년층에서 마음 건강에 대한 관심이 약 11% 증가하여 88%에 이르렀으며, 스스로 마음을 돌보는 '마음 챙김' 역시 관심이 증가하고 있습니다.</p>
+                  <div className="col-lg-6" data-aos="fade-up">
+                    <div className="display-1 fw-bold py-4">88%</div>
+                    <p className="text-black-50">'건강' 개념은 이제 신체적인 건강뿐만 아니라 마음의 건강까지를 포함하며, 관심도가 상당히 증가하고 있습니다. 작년에 비해, 청년층에서 마음 건강에 대한 관심이 약 11% 증가하여 88%에 이르렀으며, 스스로 마음을 돌보는 '마음 챙김' 역시 관심이 증가하고 있습니다.</p>
                   </div>
-                  <div class="col-lg-6" data-aos="fade-up">
-                    <div class="display-1 fw-bold py-4">+300</div>
-                    <p class="text-black-50">마음과 몸의 건강을 기록하고 관리하고 싶어하는 사용자들이 점점 늘어가고 있습니다. PureSync는 매 달 300명 이상의 신규 사용자를 유입시키는 것을 목표로 하고 있습니다.</p>
+                  <div className="col-lg-6" data-aos="fade-up">
+                    <div className="display-1 fw-bold py-4">+300</div>
+                    <p className="text-black-50">마음과 몸의 건강을 기록하고 관리하고 싶어하는 사용자들이 점점 늘어가고 있습니다. PureSync는 매 달 300명 이상의 신규 사용자를 유입시키는 것을 목표로 하고 있습니다.</p>
                   </div>
                 </div>
               </div>
@@ -104,16 +90,16 @@ function Landing() {
           </div>
         </div>
 
-        <div class="py-vh-6 bg-gray-900 text-light w-100 overflow-hidden" id="workwithus">
-          <div class="container">
-            <div class="row d-flex justify-content-center">
-              <div class="row d-flex justify-content-center text-center">
-                <div class="col-lg-8 text-center" data-aos="fade">
-                  <p class="text-secondary lead">PureSync와 함께 건강을 기록해보세요!</p>
-                  <h3 class="display-6 mb-5">식단과 운동 기록을 통해 오늘의 칼로리 및 영양 성분을 확인하고, 감정 상태 분석을 지원하는 인공지능 기반 마음 일지를 작성하여 매일 몸과 마음의 균형을 손쉽게 파악하세요!</h3>
+        <div className="py-vh-6 bg-gray-900 text-light w-100 overflow-hidden" id="workwithus">
+          <div className="container">
+            <div className="row d-flex justify-content-center">
+              <div className="row d-flex justify-content-center text-center">
+                <div className="col-lg-8 text-center" data-aos="fade">
+                  <p className="text-secondary lead">PureSync와 함께 건강을 기록해보세요!</p>
+                  <h3 className="mb-4 lh-base" style={{wordBreak: "keep-all"}}>식단과 운동 기록을 통해 오늘의 칼로리 및 영양 성분을 확인하고, 감정 상태 분석을 지원하는 인공지능 기반 마음 일지를 작성하여 매일 몸과 마음의 균형을 손쉽게 파악하세요!</h3>
                 </div>
-                <div class="col-12">
-                <a href='/sign-up' class="btn btn-warning btn-xl shadow me-3 mt-4" data-aos="fade-down" >회원 가입</a>
+                <div className="col-12">
+                <a href='/sign-up' className="btn btn-success px-5 py-3 rounded-2 me-3 mt-4" data-aos="fade-down" >회원 가입</a>
                 </div>
               </div>
 
@@ -123,52 +109,52 @@ function Landing() {
       </main>
 
       <footer>
-        <div class="container small border-top">
-          <div class="row d-flex justify-content-between">
-            <div class="col-12 p-3">
-              <div class="d-flex justify-content-between">
-                <h3 class="h6">PureSync</h3>
-                <ul class="nav d-flex">
+        <div className="container small border-top">
+          <div className="row d-flex justify-content-between">
+            <div className="col-12 p-3">
+              <div className="d-flex justify-content-between align-items-center">
+                <h3 className="h6 mb-0">PureSync</h3>
+                <ul className="nav d-flex gap-3">
 
                   <li>
-                    <a href="https://github.com/YJiHyeon" target="_blank">
-                      <FiGithub />
-                      <span class="icon-text">윤지현</span>
+                    <a href="https://github.com/YJiHyeon" target="_blank" className="flex align-items-center text-decoration-none gap-1">
+                      <FaGithub />
+                      <span className="icon-text">윤지현</span>
                     </a>
                   </li>
 
                   <li>
-                    <a href="https://github.com/seongeon0620" target="_blank">
-                      <FiGithub />
-                      <span class="icon-text">배성언</span>
+                    <a href="https://github.com/seongeon0620" target="_blank" className="flex align-items-center text-decoration-none gap-1">
+                      <FaGithub />
+                      <span className="icon-text">배성언</span>
                     </a>
                   </li>
 
                   <li>
-                    <a href="https://github.com/HSPU" target="_blank">
-                      <FiGithub />
-                      <span class="icon-text">신우석</span>
+                    <a href="https://github.com/HSPU" target="_blank" className="flex align-items-center text-decoration-none gap-1">
+                      <FaGithub />
+                      <span className="icon-text">신우석</span>
                     </a>
                   </li>
 
                   <li>
-                    <a href="https://github.com/simhyunbo" target="_blank">
-                      <FiGithub />
-                      <span class="icon-text">심현보</span>
+                    <a href="https://github.com/simhyunbo" target="_blank" className="flex align-items-center text-decoration-none gap-1">
+                      <FaGithub />
+                      <span className="icon-text">심현보</span>
                     </a>
                   </li>
 
                   <li>
-                    <a href="https://github.com/orisay" target="_blank">
-                      <FiGithub />
-                      <span class="icon-text">유재건</span>
+                    <a href="https://github.com/orisay" target="_blank" className="flex align-items-center text-decoration-none gap-1">
+                      <FaGithub />
+                      <span className="icon-text">유재건</span>
                     </a>
                   </li>
 
                   <li>
-                    <a href="https://github.com/ruhazle" target="_blank">
-                      <FiGithub />
-                      <span class="icon-text">유하영</span>
+                    <a href="https://github.com/ruhazle" target="_blank" className="flex align-items-center text-decoration-none gap-1">
+                    <FaGithub />
+                      <span className="icon-text">유하영</span>
                     </a>
                   </li>
 

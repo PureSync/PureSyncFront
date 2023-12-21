@@ -5,14 +5,12 @@ import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
 const access_token = getHeaderCookie();
 let parse_token = parseJwt(access_token);
 
-// export async function apiGetQnaBoardData() {
-//     console.log("*****************8");
-//     return QnaApiService.fetchData({
-//         url: process.env.REACT_APP_HOST_URL + '/api/qnaBoard',
-//         method: 'get',
-//     })
-// }
-
+export async function apiGetQnaArticleList(number) {
+    return  QnaApiService.fetchData({
+        url: process.env.REACT_APP_HOST_URL + `/api/qnaBoard?page=${number}&size=10`,
+        method: 'get',
+    });
+}
 export async function apiGetQnaArticle(params) {
     // console.log( params.id );
     //console.log( "****************************************8" );
@@ -20,9 +18,6 @@ export async function apiGetQnaArticle(params) {
         url: process.env.REACT_APP_HOST_URL + `/api/qnaBoard/${params.id}`,
         method: 'get',
         params,
-        headers: {
-            Authorization: `Bearer ${access_token}`
-        },
     })
 }
 

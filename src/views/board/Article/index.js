@@ -4,7 +4,6 @@ import reducer from './store'
 import { injectReducer } from 'store/index'
 import useQuery from 'utils/hooks/useQuery'
 import ArticleContent from './components/ArticleContent'
-import OthersArticle from './components/OthersArticle'
 
 injectReducer('knowledgeBaseArticle', reducer)
 

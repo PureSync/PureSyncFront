@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { apiGetQnaArticle } from 'services/KnowledgeBaseService'
+import { apiGetArticle } from 'services/KnowledgeBaseService'
 
 export const getArticle = createAsyncThunk(
     'knowledgeBaseEditArticle/data/getArticle',
     async (param) => {
-        const response = await apiGetQnaArticle(param)
+        const response = await apiGetArticle(param)
         return response.data
     }
 )

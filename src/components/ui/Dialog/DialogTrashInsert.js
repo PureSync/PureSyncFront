@@ -94,7 +94,6 @@ const DialogTrashInsert = (props) => {
                 props.goRegister();
                 props.onClose();
             })
-            .catch((res) => { })
     }
 
 

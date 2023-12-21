@@ -50,6 +50,8 @@ function useAuth() {
 
     const signOut = async () => {
         Cookies.remove('access_token');
+        dispatch(onSignOutSuccess())
+        dispatch(setUser(initialState))
         navigate(appConfig.unAuthenticatedEntryPath);
     };
 

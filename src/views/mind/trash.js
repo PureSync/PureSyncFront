@@ -20,7 +20,6 @@ const Trash = () => {
                 setCount(res.data.data.count);
                 setLoding(false);
         })
-        .catch((res) => {})
     }, [flag]);
 
     const goRegister = () => {

@@ -7,7 +7,8 @@ import { setArticle } from 'views/board/EditArticle/store/dataSlice';
 import getHeaderCookie from 'utils/hooks/getHeaderCookie'
 import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
 
-const LikeButton = ({ article ,isLike}) => {
+const LikeButton = ({ article, isLike}) => {
+  console.log(article.boardLikescount);
   const dispatch = useDispatch();
   const access_token = getHeaderCookie();
     let parse_token = parseJwt(access_token);

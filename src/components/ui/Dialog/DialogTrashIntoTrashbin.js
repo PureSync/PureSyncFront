@@ -197,7 +197,6 @@ const DialogTrashIntoTrashbin = (props) => {
                 onClose();
                 goRegister();
             })
-            .catch((res) => {})
         }
       }
 }

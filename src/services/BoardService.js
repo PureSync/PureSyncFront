@@ -1,98 +1,110 @@
 import ApiService from './ApiService'
-import getHeaderCookie from 'utils/hooks/getHeaderCookie'
-import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
 
-const access_token = getHeaderCookie();
-let parse_token = parseJwt(access_token);
-
-// export async function apiGetBoardData() {
-//     console.log("*****************8");
-//     return ApiService.fetchData({
-//         url: process.env.REACT_APP_HOST_URL + '/api/board',
-//         method: 'get',
-//         headers: {
-//             Authorization: `Bearer ${access_token}`
-//         },
-//     });
-// }
-
+export async function apiGetArticleList(number) {
+    return  ApiService.fetchData({
+        url: process.env.REACT_APP_HOST_URL + `/api/board?page=${number}&size=10`,
+        method: 'get',
+    });
+}
 
 export async function apiGetArticle(params) {
-    console.log( params.id );
-    //console.log( "****************************************8" );
     return ApiService.fetchData({
         url: process.env.REACT_APP_HOST_URL + `/api/board/${params.id}`,
         method: 'get',
-        params,
-        headers: {
-            Authorization: `Bearer ${access_token}`
-        },
     })
 }
+
+export async function apiPostArticle(data) {
+    return ApiService.fetchData({
+        url: process.env.REACT_APP_HOST_URL + `/api/board`,
+        method: 'post',
+        data: data,
+        headers : {
+            'Content-Type': 'multipart/form-data',
+        }
+    })
+}
+
+export async function apiPutArticle(params, data) {
+    return ApiService.fetchData({
+        url: process.env.REACT_APP_HOST_URL + `/api/board/${params}`,
+        method: 'put',
+        data: data,
+        headers : {
+            'Content-Type': 'multipart/form-data',
+        }
+    })
+}
+
+export async function apiDeleteArticle(params) {
+    return ApiService.fetchData({
+        url: process.env.REACT_APP_HOST_URL + `/api/board/${params}`,
+        method: 'delete'
+    })
+}
+
+export async function apiPostComment(params, data) {
+    return ApiService.fetchData({
+        url: process.env.REACT_APP_HOST_URL + `/api/board/${params}/comments`,
+        method: 'post',
+        data: data,
+        headers : {
+            'Content-Type': 'application/json', 
+        }
+    })
+}
+
+export async function apiPutComment(boardSeq, cmtSeq, data  ) {
+    return ApiService.fetchData({
+        url: process.env.REACT_APP_HOST_URL + `/api/board/${boardSeq}/comments/${cmtSeq}`,
+        method: 'put',
+        data: data,
+        headers : {
+            'Content-Type': 'application/json', 
+        }
+    })
+}
+
+export async function apiDeleteComment(boardSeq,cmtSeq) {
+    return ApiService.fetchData({
+        url: process.env.REACT_APP_HOST_URL + `/api/board/${boardSeq}/comments/${cmtSeq}`,
+        method: 'delete'
+    })
+}
+
+export async function apiGetMyLikes(params) {
+    return ApiService.fetchData({
+        url: process.env.REACT_APP_HOST_URL + `/api/board/${params}/mylikes`,
+        method: 'get',
+    })
+}
+
+export async function apiGetNotice() {
+    return ApiService.fetchData({
+        url: process.env.REACT_APP_HOST_URL + `/api/notice/list`,
+        method: 'get',
+    })
+}
+
+export async function apiGetNoticeView(params) {
+    return ApiService.fetchData({
+        url: process.env.REACT_APP_HOST_URL + `/api/notice/view/${params}`,
+        method: 'get',
+    })
+}
+
+
+
+// =================================================
 
 export async function apiGetOthersArticleList(params) {
     return ApiService.fetchData({
         url: process.env.REACT_APP_HOST_URL + `/api/board/${params.id}/comments`,
         method: 'get',
         params,
-        headers: {
-            Authorization: `Bearer ${access_token}`
-        },
     })
 }
 
-
-export async function apiGetCrmDashboardData(data) {
-    return ApiService.fetchData({
-        url: '/crm/dashboard',
-        method: 'get',
-        data,
-    })
-}
-
-export async function apiGetCrmCalendar() {
-    return ApiService.fetchData({
-        url: '/crm/calendar',
-        method: 'get',
-    })
-}
-
-export async function apiGetCrmCustomers(data) {
-
-    // let result = await ApiService.fetchData({
-    //     url: process.env.REACT_APP_HOST_URL + '/api/board',
-    //     method: 'get',
-    //     data,
-    // });
-
-    // console.log( result);
-
-    return  ApiService.fetchData({
-        url: process.env.REACT_APP_HOST_URL + '/api/board',
-        method: 'get',
-        headers: {
-            Authorization: `Bearer ${access_token}`
-        },
-    });
-}
-
-
-export async function apiGetCrmCustomersStatistic(params) {
-    return ApiService.fetchData({
-        url: '/crm/customers-statistic',
-        method: 'get',
-        params,
-    })
-}
-
-
-export async function apPutCrmCustomer(data) {
-    return ApiService.fetchData({
-        url: '/crm/customers',
-        method: 'put',
-        data,
-    })
-}
 
 export async function apiGetCrmCustomerDetails(params) {
 
@@ -107,26 +119,4 @@ export async function apiGetCrmCustomerDetails(params) {
 
 
 
-export async function apiDeleteCrmCustomer(data) {
-    return ApiService.fetchData({
-        url: '/crm/customer/delete',
-        method: 'delete',
-        data,
-    })
-}
 
-export async function apiGetCrmMails(params) {
-    return ApiService.fetchData({
-        url: '/crm/mails',
-        method: 'get',
-        params,
-    })
-}
-
-export async function apiGetCrmMail(params) {
-    return ApiService.fetchData({
-        url: '/crm/mail',
-        method: 'get',
-        params,
-    })
-}

@@ -59,16 +59,16 @@ const ProfileBody = ({ data, onDataUpdate  }) => {
     }
 
     const onFormSubmit = async (values, setSubmitting) => {
-        const response = await apiPostMemberDetails(values);
-        if (response.status == 200) {
-            onDataUpdate(response.data.data.updateInfo);
+        await apiPostMemberDetails(values)
+            .then((res) => {
+                onDataUpdate(res.data.data.updateInfo);
             toast.push(<Notification title={'수정이 완료되었습니다.'} type="success" />, { placement: 'top-center' });
-            setSubmitting(false);
-            return;
-        }
+            })
+            .catch((err) => {
+                toast.push(<Notification title={'API 호출 에러'} type="danger" />, { placement: 'top-center' });
+            });
         
-        toast.push(<Notification title={'API 호출 에러'} type="danger" />, { placement: 'top-center' });
-        return;
+        setSubmitting(false);
     }
     
     return (

@@ -54,7 +54,7 @@ const EditArticle = () => {
             <AdaptableCard>
                 <div className="max-w-[800px] mx-auto">
                     <div className="flex justify-between items-center mb-4">
-                        <h3>나문희 게시판</h3>
+                        <h3>문의게시판</h3>
                     </div>
                     <Editor mode={mode} />
                 </div>

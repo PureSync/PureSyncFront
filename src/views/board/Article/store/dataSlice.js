@@ -2,12 +2,21 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import {
     apiGetArticle,
     apiGetOthersArticleList,
+    apiGetNoticeView,
 } from 'services/BoardService'
 
 export const getArticle = createAsyncThunk(
     'knowledgeBaseArticle/data/getArticle',
     async (param) => {
         const response = await apiGetArticle(param)
+        return response.data
+    }
+)
+
+export const apiGetNotice = createAsyncThunk(
+    'knowledgeBaseArticle/data/getNotice',
+    async (param) => {
+        const response = await apiGetNoticeView(param)
         return response.data
     }
 )

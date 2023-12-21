@@ -12,9 +12,14 @@ const Likes = () => {
 
     useEffect(() => {
         const fetchPosts = async () => {
-            const response = await apiGetLikePosts();
-            setLikeList(response.data.data.likePostList);
-            setLoading(false);
+            await apiGetLikePosts()
+                .then((res) => {
+                    setLikeList(res.data.data.likePostList);
+                    setLoading(false);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
         };
 
         fetchPosts();

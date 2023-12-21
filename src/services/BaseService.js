@@ -6,7 +6,7 @@ import deepParseJson from 'utils/deepParseJson'
 import store from '../store'
 import { onSignOutSuccess } from '../store/auth/sessionSlice'
 import ApiService from './ApiService'
-import getCookie from './getCookie'
+import { getCookie } from 'utils/hooks/cookie'
 
 const unauthorizedCode = [401]
 
@@ -55,13 +55,6 @@ BaseService.interceptors.response.use(
     }
 )
 
-// 23-12-16 성언 임시주석 이동필요 
-// export async function getboardFile (boardSeq) {
-//     return ApiService.fetchData({
-//         url: 'http://localhost:9000/api/board/${boardSeq}/file',
-//         method: 'get'
-//     })
-// }
 
 export default BaseService
 

@@ -26,7 +26,6 @@ const Diary = () => {
             setLoadingMore(false);
             setPage((page) => page + 1)
         })
-        .catch((error) => {})
     }
 
     useEffect(() => {
@@ -39,7 +38,6 @@ const Diary = () => {
                 setLoding(false)
             }
         )
-        .catch((error) => {});
     }, [])
 
     useEffect(() => {

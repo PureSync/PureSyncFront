@@ -128,14 +128,13 @@ const DatePickerUpdate = forwardRef((props, ref) => {
             const formattedDate = dayjs(date).format('YYYY-MM-DD');
             setValue(date);
             setInputState(formattedDate);
-            form.setFieldValue(field.name, formattedDate);
+            form.setFieldValue(field.name, formattedDate); 
         } else {
             form.setFieldError(field.name, '유효한 날짜를 선택해주세요.');
         }
         window.setTimeout(() => inputRef.current?.focus(), 0);
         closePickerOnChange && closeDropdown();
-
-    }
+    };
 
     const handleClear = () => {
         setValue(null)
@@ -192,20 +191,33 @@ const DatePickerUpdate = forwardRef((props, ref) => {
     }
 
     const handleChange = (event) => {
-        openDropdown()
-
-        const date = parseDate(event.target.value)
-        if (dayjs(date).isValid()) {
-            setValue(date)
-            setLastValidValue(date)
-            setInputState(event.target.value)
-            setCalendarMonth(date)
-        } else {
-            setInputState(event.target.value)
+        const inputValue = event.target.value;
+        // if(inputValue.length<11) return;
+        if (inputValue.length > 10) {
+            return;
         }
 
-
-    }
+        let formattedInput = inputValue.replace(/[^\d]/g, ""); 
+        if (formattedInput.length <= 4) {
+        } else if (formattedInput.length <= 6) {
+            formattedInput = `${formattedInput.slice(0, 4)}-${formattedInput.slice(4)}`;
+        } else {
+            formattedInput = `${formattedInput.slice(0, 4)}-${formattedInput.slice(4, 6)}-${formattedInput.slice(6)}`;
+        }
+        if (formattedInput.length > 8) {
+            formattedInput = formattedInput.slice(0, 10);
+        }
+        setInputState(formattedInput); //
+    
+        if (formattedInput.length === 10 && /^\d{4}-\d{2}-\d{2}$/.test(formattedInput)) {
+            if (dayjs(formattedInput, dateFormat, finalLocale).isValid()) {
+                const date = dayjs(formattedInput, dateFormat, finalLocale).toDate();
+                setValue(date);
+                setLastValidValue(date);
+                setCalendarMonth(date);
+            }
+        }
+    };
 
     return (
         <BasePicker

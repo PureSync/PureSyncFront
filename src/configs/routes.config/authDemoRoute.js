@@ -85,7 +85,7 @@ const authDemoRoute = [
         key: 'authentication.forgotPasswordSimple',
         path: `${AUTH_PREFIX_PATH}/forgot-password-simple`,
         component: React.lazy(() =>
-            import('views/auth-demo/ForgotPassword/ForgotPasswordSimple')
+            import('views/auth-demo/ForgotId/ForgotPasswordSimple')
         ),
         authority: [ADMIN, USER],
         meta: {
@@ -98,7 +98,7 @@ const authDemoRoute = [
         key: 'authentication.forgotPasswordSide',
         path: `${AUTH_PREFIX_PATH}/forgot-password-side`,
         component: React.lazy(() =>
-            import('views/auth-demo/ForgotPassword/ForgotPasswordSide')
+            import('views/auth-demo/ForgotId/ForgotPasswordSide')
         ),
         authority: [ADMIN, USER],
         meta: {
@@ -111,7 +111,7 @@ const authDemoRoute = [
         key: 'authentication.forgotPasswordCover',
         path: `${AUTH_PREFIX_PATH}/forgot-password-cover`,
         component: React.lazy(() =>
-            import('views/auth-demo/ForgotPassword/ForgotPasswordCover')
+            import('views/auth-demo/ForgotId/ForgotPasswordCover')
         ),
         authority: [ADMIN, USER],
         meta: {

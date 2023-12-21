@@ -26,19 +26,23 @@ import {
     HiOutlineCode,
 } from 'react-icons/hi'
 
-import { LuHeartHandshake } from "react-icons/lu";
+import { 
+    LuHeartHandshake,
+    LuMoonStar,
+    LuSalad,
+    LuPenSquare,
+    LuScrollText,
+    LuGanttChartSquare,
+    LuMailQuestion 
+} from "react-icons/lu";
 
 import {
-    BsHeart,
     BsPersonBoundingBox,
     BsBarChart,
-    BsClipboard,
     BsTrash,
-    BsPencilSquare,
-    BsListUl,
-    BsMoonStars,
     BsTable
  } from "react-icons/bs";
+
 
 const navigationIcon = {
     apps: <HiOutlineViewGridAdd />,
@@ -68,16 +72,17 @@ const navigationIcon = {
     sharedComponentDoc: <HiOutlineShare />,
     utilsDoc: <HiOutlineVariable />,
     changeLog: <HiOutlineCode />,
-    heart : <BsHeart />,
     body : <BsPersonBoundingBox />,
     dashboard : <BsBarChart />,
-    board : <BsClipboard />,
+    board : <LuGanttChartSquare  />,
     trash : <BsTrash />,
-    write : <BsPencilSquare />,
-    list : <BsListUl />,
-    sleep: <BsMoonStars />,
+    write : <LuPenSquare />,
+    sleep: <LuMoonStar />,
+    food : <LuSalad />,
     table : <BsTable />,
-    heart2 : <LuHeartHandshake />
+    heart : <LuHeartHandshake />,
+    test : <LuScrollText />,
+    qnaboard : <LuMailQuestion />
 }
 
 export default navigationIcon

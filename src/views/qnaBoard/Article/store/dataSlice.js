@@ -1,27 +1,36 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import {
-    apiGetQnaArticle,
-    apiGetQnaOthersArticleList,
-} from 'services/QnaBoardService'
+    apiGetArticle,
+    apiGetOthersArticleList,
+    apiGetNoticeView,
+} from 'services/BoardService'
 
 export const getArticle = createAsyncThunk(
-    'knowledgeBaseQnaArticle/data/getQnaArticle',
+    'knowledgeBaseArticle/data/getArticle',
     async (param) => {
-        const response = await apiGetQnaArticle(param)
+        const response = await apiGetArticle(param)
+        return response.data
+    }
+)
+
+export const apiGetNotice = createAsyncThunk(
+    'knowledgeBaseArticle/data/getNotice',
+    async (param) => {
+        const response = await apiGetNoticeView(param)
         return response.data
     }
 )
 
 export const getOthersArticle = createAsyncThunk(
-    'knowledgeBaseQnaArticle/data/getQnaOthersArticle',
+    'knowledgeBaseArticle/data/getOthersArticle',
     async (param) => {
-        const response = await apiGetQnaOthersArticleList(param)
+        const response = await apiGetOthersArticleList(param)
         return response.data
     }
 )
 
 const dataSlice = createSlice({
-    name: 'knowledgeBaseQnaArticle/data',
+    name: 'knowledgeBaseArticle/data',
     initialState: {
         loading: false,
         otherLoading: false,
@@ -34,7 +43,9 @@ const dataSlice = createSlice({
     extraReducers: {
         [getArticle.fulfilled]: (state, action) => {
             state.loading = false
-            state.article = action.payload.data.qnaBoardDetailDto;
+            state.article = action.payload.data.boardDetailDto;
+            // console.log( "***********************************");
+            // console.log( state.article);
         },
         [getArticle.pending]: (state) => {
             state.loading = true
