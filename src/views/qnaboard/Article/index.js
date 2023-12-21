@@ -5,7 +5,7 @@ import { injectReducer } from 'store/index'
 import useQuery from 'utils/hooks/useQuery'
 import ArticleContent from './components/ArticleContent'
 
-injectReducer('knowledgeBaseArticle', reducer)
+injectReducer('qnaArticle', reducer)
 
 const Article = () => {
     const query = useQuery()

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const stateSlice = createSlice({
-    name: 'knowledgeBaseEditArticle/state',
+    name: 'qnaArticle/state',
     initialState: {
         categoryValue: '',
         categoryLabel: '',
