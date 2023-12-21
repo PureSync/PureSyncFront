@@ -1,22 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import {
-    apiGetArticle,
     apiGetOthersArticleList,
-    apiGetNoticeView,
-} from 'services/BoardService'
+    apiGetQnaArticle,
+    
+} from 'services/QnaBoardService'
 
 export const getArticle = createAsyncThunk(
     'knowledgeBaseArticle/data/getArticle',
     async (param) => {
-        const response = await apiGetArticle(param)
-        return response.data
-    }
-)
-
-export const apiGetNotice = createAsyncThunk(
-    'knowledgeBaseArticle/data/getNotice',
-    async (param) => {
-        const response = await apiGetNoticeView(param)
+        const response = await apiGetQnaArticle(param)
         return response.data
     }
 )
@@ -43,9 +35,9 @@ const dataSlice = createSlice({
     extraReducers: {
         [getArticle.fulfilled]: (state, action) => {
             state.loading = false
-            state.article = action.payload.data.boardDetailDto;
-            // console.log( "***********************************");
-            // console.log( state.article);
+            state.article = action.payload.data.qnaBoardDetailDto;
+             console.log( "***********************************");
+             console.log( state.article);
         },
         [getArticle.pending]: (state) => {
             state.loading = true
