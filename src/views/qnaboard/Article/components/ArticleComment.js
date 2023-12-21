@@ -38,7 +38,7 @@ const ArticleComment = ({ data }) => {
     }
 
     await apiPutComment(data.qnaBoardSeq, qnaCmtSeq, JSON.stringify({
-      cmtContents: modifiedContents
+      qnaCmtContents: modifiedContents
     }))
       .then((res) => {
         window.location.reload()
@@ -54,14 +54,14 @@ const ArticleComment = ({ data }) => {
         {data.qnaComment.map((qnaComment) => (
           <div style={{ marginBottom: '10px' }}>
             <div className="flex items-center justify-between mb-4">
-              {console.log('qnaComment.memId:', qnaComment.memId)}
-              <p>작성자: {qnaComment.memId}</p>
+              {console.log('qnaComment.qnaCmtWriter:', qnaComment.qnaCmtWriter)}
+              <p>작성자 : {qnaComment.qnaCmtWriter}</p>
               <div className="flex gap-2">
                 <span className="flex items-center gap-2">
                   <HiOutlineClock className="text-lg" />
                   <span>{qnaComment.cmtWdate}</span>
                 </span>
-                {qnaComment.qnaCmtStatus === 1 && qnaComment.memId === userName && (
+                {qnaComment.qnaCmtStatus === 1 && qnaComment.qnaCmtWriter === userName && (
                   <>
                     {editingComment === qnaComment.qnaCmtSeq ? (
                       <>
@@ -83,7 +83,7 @@ const ArticleComment = ({ data }) => {
                           color="green-600"
                           onClick={() => {
                             setEditingComment(qnaComment.qnaCmtSeq);
-                            setModifiedCommentContent(qnaComment.cmtContents);
+                            setModifiedCommentContent(qnaComment.qnaCmtContents);
                           }}
                         >
                           수정
@@ -117,7 +117,7 @@ const ArticleComment = ({ data }) => {
                       onChange={(e) => setModifiedCommentContent(e.target.value)}
                     />
                   ) : (
-                    qnaComment.cmtContents
+                    qnaComment.qnaCmtContents
                   )}
                 </>
               )}
