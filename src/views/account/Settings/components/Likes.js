@@ -1,20 +1,34 @@
 import React, { useState, useEffect } from 'react'
 import Table from 'components/ui/Table'
-import { Loading } from 'components/shared'
+import { TableRowSkeleton } from 'components/shared'
 import ActionLink from 'components/shared/ActionLink'
 import { apiGetLikePosts } from 'services/AccountServices'
+import Pagination from 'components/ui/Pagination'
 
 const { Tr, Th, Td, THead, TBody } = Table
 
 const Likes = () => {
     const [likeList, setLikeList] = useState({});
     const [loading, setLoading] = useState(true);
+    const [number, setNumber] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+
+    const onPaginationChange = (number) => {
+        setLoading(true);
+        apiGetLikePosts(number - 1)
+            .then((res) => {
+                setLikeList(res.data.data.likePostList.content);
+                setTotalPages(res.data.data.likePostList.totalPages);
+                setLoading(false);
+                setNumber(number);
+            })
+    }
 
     useEffect(() => {
         const fetchPosts = async () => {
-            await apiGetLikePosts()
+            await apiGetLikePosts(number - 1)
                 .then((res) => {
-                    setLikeList(res.data.data.likePostList);
+                    setLikeList(res.data.data.likePostList.content);
                     setLoading(false);
                 })
                 .catch((err) => {
@@ -26,18 +40,20 @@ const Likes = () => {
     }, []);
 
     return (
-        <Loading loading={loading}>
-            <div>
-                <Table>
-                    <THead>
-                        <Tr>
-                            <Th>글번호</Th>
-                            <Th>제목</Th>
-                            <Th>작성자</Th>
-                            <Th>작성일시</Th>
-                            <Th>좋아요</Th>
-                        </Tr>
-                    </THead>
+        <div>
+            <Table>
+                <THead>
+                    <Tr>
+                        <Th>글번호</Th>
+                        <Th>제목</Th>
+                        <Th>작성자</Th>
+                        <Th>작성일시</Th>
+                        <Th>좋아요</Th>
+                    </Tr>
+                </THead>
+                {loading ? (
+                    <TableRowSkeleton columns={5} rows={10} />
+                ) : (
                     <TBody>
                         {likeList.length > 0 ? (
                             likeList.map((post) => (
@@ -57,9 +73,13 @@ const Likes = () => {
                             </Tr>
                         )}
                     </TBody>
-                </Table>
+                )}
+
+            </Table>
+            <div className='text-center mt-5'>
+                <Pagination onChange={onPaginationChange} total={totalPages} />
             </div>
-        </Loading>
+        </div>
     );
 }
 
