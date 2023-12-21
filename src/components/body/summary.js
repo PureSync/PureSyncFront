@@ -25,7 +25,7 @@ function Summary(props) {
       <div className="summary-content grid grid-cols-4 ">
 
         {/* 요약 박스 */}
-        <div class="summary-box col-start-1 col-span-2 ">
+        <div className="summary-box col-start-1 col-span-2 ">
           <h6>섭취 칼로리</h6>
           <div className="summary-item">
             <p>아침 + {props.menuWhenData[1] === 0 ? 0 : (props.menuWhenData[1] || 0)}</p>

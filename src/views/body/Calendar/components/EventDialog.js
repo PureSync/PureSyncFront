@@ -314,7 +314,7 @@ const EventDialog = ({ submit }) => {
                                         등록
                                     </Button>
                                     {selected.type !== 'NEW' && (
-                                        <Button variant="outline" type="button" className="ml-2 text-red-500" onClick={handleDelete}>
+                                        <Button variant="solid" type="button" className="ml-2 text-red-500" onClick={handleDelete}>
                                             삭제
                                         </Button>
                                     )}
