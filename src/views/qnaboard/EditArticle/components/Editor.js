@@ -11,7 +11,7 @@ import { RichTextEditor } from 'components/shared'
 import { Field, Form, Formik, setIn } from 'formik'
 import { useNavigate, useLocation } from 'react-router-dom'
 import * as Yup from 'yup'
-import { apiPostArticle, apiPutArticle } from 'services/BoardService'
+import { apiPostArticle, apiPutArticle } from 'services/QnaBoardService'
 
 // const validationSchema = Yup.object().shape({
 //     title: Yup.string().required('Title required'),
@@ -28,7 +28,7 @@ const Editor = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            if (updateData && updateData.boardFile) {
+            if (updateData && updateData.qnaBoardFile) {
                 const fileObjects = await convertDataToFileObjects(updateData);
                 setInitFile(fileObjects);
                 // console.log(fileObjects)
@@ -85,8 +85,8 @@ const Editor = () => {
     };
 
     const convertDataToFileObjects = async (updateData) => {
-        if (updateData && updateData.boardFile && updateData.boardFile.length > 0) {
-            const fileObjects = await Promise.all(updateData.boardFile.map((fileInfo) => createFileObject(fileInfo)));
+        if (updateData && updateData.qnaBoardFile && updateData.qnaBoardFile.length > 0) {
+            const fileObjects = await Promise.all(updateData.qnaBoardFile.map((fileInfo) => createFileObject(fileInfo)));
             return fileObjects;
         }
 
@@ -100,11 +100,11 @@ const Editor = () => {
 
     const onComplete = async (values, setSubmitting) => {
         setSubmitting(true);
-        values.boardContents = stripHtmlUsingDOM(values.boardContents)
+        values.qnaBoardContents = stripHtmlUsingDOM(values.qnaBoardContents)
 
         const formData = new FormData();
-        formData.append("boardName", values.boardName);
-        formData.append("boardContents", values.boardContents);
+        formData.append("qnaBoardName", values.qnaBoardName);
+        formData.append("qnaBoardContents", values.qnaBoardContents);
         console.log("***************************" + values.file);
         if (values.file.length != 0) {
             Array.from(values.file).forEach(file => {
@@ -127,7 +127,7 @@ const Editor = () => {
                 .then((res) => {
                     console.log('파일 업로드 성공:', res.data);
                     alert('게시글이 작성되었습니다.');
-                    navigate(`/board/view?id=${res.data.data.board.boardSeq}`);
+                    navigate(`/qnaboard/view?id=${res.data.data.qnaBoard.qnaBoardSeq}`);
                 })
                 .catch((error) => { console.log(error) })
 
@@ -137,7 +137,7 @@ const Editor = () => {
                 .then((res) => {
                     console.log('파일 업로드 성공:', res.data);
                     alert('게시글이 수정되었습니다.');
-                    navigate(`/board/view?id=${updateData.articleId}`);
+                    navigate(`/qnaboard/view?id=${updateData.articleId}`);
                 })
                 .catch((error) => { console.log(error) })
         }
@@ -148,9 +148,9 @@ const Editor = () => {
     return (
         <Formik
             initialValues={{
-                boardName: updateData ? updateData.boardName : '',
-                boardContents: updateData ? updateData.boardContents : '',
-                file: updateData && updateData.boardFile ? initFile : [],
+                qnaBoardName: updateData ? updateData.qnaBoardName : '',
+                qnaBoardContents: updateData ? updateData.qnaBoardContents : '',
+                file: updateData && updateData.qnaBoardFile ? initFile : [],
                 // file: [],
             }}
             onSubmit={(values, { setSubmitting }) => {
@@ -161,7 +161,7 @@ const Editor = () => {
                 <Form enctype="multipart/form-data" name="myform">
                     <FormContainer>
                         <FormItem label="제목">
-                            <Field autoComplete="off" name="boardName" component={Input} />
+                            <Field autoComplete="off" name="qnaBoardName" component={Input} />
                         </FormItem>
                         <FormItem
                             label="내용"
@@ -170,7 +170,7 @@ const Editor = () => {
                             invalid={errors.content && touched.content}
                             errorMessage={errors.content}
                         >
-                            <Field name="boardContents">
+                            <Field name="qnaBoardContents">
                                 {({ field, form }) => (
                                     <RichTextEditor
                                         value={field.value}

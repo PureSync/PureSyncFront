@@ -14,8 +14,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { Button } from 'components/ui'
 import { HiOutlineClock, HiOutlineCog, HiOutlinePencil, HiOutlineInboxIn, HiOutlineTrash, HiOutlineHeart } from 'react-icons/hi'
 import { getboardFile } from 'services/DashboardService'
-import LikeButton from './LikeButton'
-import { apiDeleteArticle, apiGetMyLikes } from 'services/BoardService'
+import { apiDeleteArticle } from 'services/QnaBoardService'
 import axios from 'axios'
 
 
@@ -27,23 +26,20 @@ const ArticleContent = ({ articleId }) => {
         (state) => state.auth.user
     )
     console.log(userName);
-    const [mylikes, setMylikes] = useState(0);
     const article = useSelector(
-        (state) => state.knowledgeBaseArticle.data.article
+        (state) => state.qnaArticle.data.article
     )
     const loading = useSelector(
-        (state) => state.knowledgeBaseArticle.data.loading
+        (state) => state.qnaArticle.data.loading
     )
     console.log(article);
     const { search } = useLocation()
 
     useEffect(() => {
         fetchData();
-        fetchMylikes();
 
-        console.log("================" + mylikes);
         console.log(article);
-    }, [search, mylikes])
+    }, [search])
 
 
     const fetchData = () => {
@@ -52,50 +48,40 @@ const ArticleContent = ({ articleId }) => {
         }
     }
 
-    const fetchMylikes = async () => {
-        await apiGetMyLikes(articleId)
-            .then((res) => {
-                setMylikes(res.data.data.findMyLikes);
-            })
-            .catch(error => { console.log(error) })
-    };
 
     const handleUpdate = () => {
         // 필요한 데이터를 객체로 만들어 전달
         const updateData = {
-            articleId: article.boardSeq,
-            boardName: article.boardName,
-            boardContents: article.boardContents,
-            boardFile: article.boardFile
+            articleId: article.qnaBoardSeq,
+            boardName: article.qnaBoardName,
+            boardContents: article.qnaBoardContents,
+            boardFile: article.qnaBoardFile
 
         };
 
         // navigate를 사용하여 editor.js로 이동하면서 데이터 전달
-        navigate('/board/write', { state: { updateData } });
+        navigate('/qnaboard/write', { state: { updateData } });
     }
 
 
     const handleDelete = async () => {
 
-        if (!article.boardSeq) {
+        if (!article.qnaBoardSeq) {
             console.error('게시물 boardSeq를 찾을 수 없습니다.');
             return;
         }
-        await apiDeleteArticle(article.boardSeq)
+        await apiDeleteArticle(article.qnaBoardSeq)
             .then((res) => {
-                navigate('/board');
+                navigate('/qnaboard');
             })
-            
+
     };
 
     const commentRegister = () => {
-        console.log(article.findBoardFile);
+
         fetchData()
     }
 
-
-
-    const [imageUrlList, setImageUrlList] = useState([]);
 
     return (
         <Loading
@@ -110,11 +96,8 @@ const ArticleContent = ({ articleId }) => {
             }
         >
             <div className="flex items-center justify-between">
-                <h3>{article.boardName}</h3>
+                <h3>{article.qnaBoardName}</h3>
                 <div className="gap-2 flex">
-                    <LikeButton article={article} fetchData={fetchData} isLike={mylikes} />
-                    {/* <Button onClick={handleLike} variant="twoTone" icon={<HiOutlineHeart fill={article.boardLikescount ? 'blue' : 'white'} />}
-                     size="sm" color="blue-600" >좋아요</Button> */}
                     {article.memId === userName && (
                         <>
                             <Button onClick={handleUpdate} variant="twoTone" icon={<HiOutlinePencil />} size="sm" color="green-600" >수정하기</Button>
@@ -131,25 +114,23 @@ const ArticleContent = ({ articleId }) => {
                 <div className="text-sm">
                     <div>
                         <span>작성자 : {article.memId}</span>
-                        <span className="mx-2">•</span>
-                        <span>좋아요 : {article.boardLikescount}</span>
-
                     </div>
                     <div className="mb-1">
                         <span className="flex items-center gap-1">
                             <HiOutlineClock className="text-lg" />
-                            작성일시 <span>{article.boardWdate}</span>
+                            작성일시 <span>{article.qnaBoardWdate}</span>
                         </span>
                     </div>
                 </div>
             </div>
             <div className="mt-8 prose dark:prose-invert max-w-none">
                 <p>{ReactHtmlParser(article.content || '')}</p>
-                <p>{article.boardContents}</p>
+                <p>{article.qnaBoardContents}</p>
+
                 <div className="grid grid-cols-2 gap-5">
                     {
-                        article && article.boardFile && article.boardFile.length > 0
-                            ? article.boardFile.map((item, index) => (
+                        article && article.qnaBoardFile && article.qnaBoardFile.length > 0
+                            ? article.qnaBoardFile.map((item, index) => (
                                 item.fileUrl && (
                                     <div style={{ width: '100%', height: 'auto' }}>
                                         <img
@@ -164,12 +145,8 @@ const ArticleContent = ({ articleId }) => {
                             : null
                     }
                 </div>
-
-
-
             </div>
-
-            <ArticleAction data={article.boardSeq} commentRegister={commentRegister} />
+            <ArticleAction data={article.qnaBoardSeq} commentRegister={commentRegister} />
             <ArticleComment data={article} />
         </Loading>
     )
