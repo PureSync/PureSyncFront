@@ -114,12 +114,24 @@ const appsRoute = [
         component: React.lazy(() => import('views/qnaboard/index')),
         authority: [ADMIN, USER],
     },
-    // {
-    //     key: 'qnaBoard.detail',
-    //     path: `/qnaBoard/view`,
-    //     component: React.lazy(() => import('views/qnaBoard/Article/index')),
-    //     authority: [ADMIN, USER],
-    // },
+    {
+        key: 'qnaBoard.detail',
+        path: `/qnaBoard/view`,
+        component: React.lazy(() => import('views/qnaboard/Article/index')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'qnaboard',
+        path: `/qnaboard`,
+        component: React.lazy(() => import('views/qnaboard/index')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'qnaboard.write',
+        path: `/qnaboard/write`,
+        component: React.lazy(() => import('views/qnaboard/EditArticle')),
+        authority: [ADMIN, USER],
+    },
     // {
     //     key: 'qnaBoard.write',
     //     path: `/qnaBoard/write`,

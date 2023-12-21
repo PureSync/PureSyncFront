@@ -29,16 +29,16 @@ export async function apiPutPassword(data) {
     })
 }
 
-export async function apiGetLikePosts() {
+export async function apiGetLikePosts(page) {
     return ApiService.fetchData({
-        url: process.env.REACT_APP_HOST_URL + '/api/my/liked-posts',
+        url: process.env.REACT_APP_HOST_URL + `/api/my/liked-posts?page=${page}`,
         method: 'get',
     })
 }
 
-export async function apiGetMyPosts() {
+export async function apiGetMyPosts(page) {
     return ApiService.fetchData({
-        url: process.env.REACT_APP_HOST_URL + '/api/my/posts',
+        url: process.env.REACT_APP_HOST_URL + `/api/my/posts?page=${page}`,
         method: 'get',
     })
 }
