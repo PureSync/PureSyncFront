@@ -6,7 +6,7 @@ import {
 } from 'services/QnaBoardService'
 
 export const getArticle = createAsyncThunk(
-    'knowledgeBaseArticle/data/getArticle',
+    'knowledgeBaseQnaArticle/data/getArticle',
     async (param) => {
         const response = await apiGetQnaArticle(param)
         return response.data
@@ -14,7 +14,7 @@ export const getArticle = createAsyncThunk(
 )
 
 export const getOthersArticle = createAsyncThunk(
-    'knowledgeBaseArticle/data/getOthersArticle',
+    'knowledgeBaseQnaArticle/data/getOthersArticle',
     async (param) => {
         const response = await apiGetOthersArticleList(param)
         return response.data
@@ -22,11 +22,11 @@ export const getOthersArticle = createAsyncThunk(
 )
 
 const dataSlice = createSlice({
-    name: 'knowledgeBaseArticle/data',
+    name: 'knowledgeBaseQnaArticle/data',
     initialState: {
         loading: false,
         otherLoading: false,
-        article: [],
+        qnaArticle: [],
         othersArticle: {
             relatedArticle: [],
             popularArticle: [],
@@ -35,9 +35,9 @@ const dataSlice = createSlice({
     extraReducers: {
         [getArticle.fulfilled]: (state, action) => {
             state.loading = false
-            state.article = action.payload.data.qnaBoardDetailDto;
+            state.qnaArticle = action.payload.data.qnaBoardDetailDto;
              console.log( "***********************************");
-             console.log( state.article);
+             console.log( state.qnaArticle);
         },
         [getArticle.pending]: (state) => {
             state.loading = true
