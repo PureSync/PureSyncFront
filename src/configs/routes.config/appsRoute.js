@@ -109,9 +109,9 @@ const appsRoute = [
     },
     // 문의게시판
     {
-        key: 'qnaboard',
-        path: `/qnaboard`,
-        component: React.lazy(() => import('views/qnaboard/index')),
+        key: 'qnaBoard',
+        path: `/qnaBoard`,
+        component: React.lazy(() => import('views/qnaBoard/index')),
         authority: [ADMIN, USER],
     },
     // {

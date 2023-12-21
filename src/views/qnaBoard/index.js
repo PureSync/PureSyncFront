@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { AdaptableCard } from 'components/shared'
-// import BoardListHeader from './components/BoardListHeader'
+import BoardListHeader from './components/BoardListHeader'
 import Table from 'components/ui/Table'
 import { Loading, TextBlockSkeletonm, TableRowSkeleton } from 'components/shared'
 import ActionLink from 'components/shared/ActionLink'
