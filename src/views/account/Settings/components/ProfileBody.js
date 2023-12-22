@@ -20,24 +20,24 @@ const { Control } = components
 
 const validationSchema = Yup.object().shape({
     bodyHeight : Yup.number()
-        .min(100, '100보다 큰 숫자만 가능합니다.')
-        .max(199.99, '200보다 작은 숫자만 가능합니다.')
+        .moreThan(0, '0보다 큰 숫자만 가능합니다.')
+        .lessThan(300, '300보다 작은 숫자만 가능합니다.')
         .required('키를 입력해 주세요.'),
     bodyWeight : Yup.number()
-        .min(0, '0보다 큰 숫자만 가능합니다.')
-        .max(199.99, '200보다 작은 숫자만 가능합니다.')
+        .moreThan(0, '0보다 큰 숫자만 가능합니다.')
+        .lessThan(300, '300보다 작은 숫자만 가능합니다.')
         .required('몸무게를 입력해 주세요.'),
     bodyWishWeight : Yup.number()
-        .min(0, '0보다 큰 숫자만 가능합니다.')
-        .max(199.99, '200보다 작은 숫자만 가능합니다.')
+        .moreThan(0, '0보다 큰 숫자만 가능합니다.')
+        .lessThan(300, '300보다 작은 숫자만 가능합니다.')
         .required('목표 몸무게를 입력해 주세요.'),
     bodyWishConscal : Yup.number()
-        .min(0, '0보다 큰 숫자만 가능합니다.')
-        .max(9999.99, '10000보다 작은 숫자만 가능합니다.')
+        .moreThan(0, '0보다 큰 숫자만 가능합니다.')
+        .lessThan(10000, '10000보다 작은 숫자만 가능합니다.')
         .required('목표 섭취칼로리를 입력해 주세요.'),
     bodyWishBurncal : Yup.number()
-        .min(0, '0보다 큰 숫자만 가능합니다.')
-        .max(9999.99, '10000보다 작은 숫자만 가능합니다.')
+        .moreThan(0, '0보다 큰 숫자만 가능합니다.')
+        .lessThan(10000, '10000보다 작은 숫자만 가능합니다.')
         .required('목표 소모칼로리를 입력해 주세요.'),
     
 })

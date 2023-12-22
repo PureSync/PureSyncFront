@@ -1,5 +1,4 @@
 import {useEffect, useState} from "react";
-import SendHeaderCookie from 'utils/hooks/getHeaderCookie'
 import { Loading } from 'components/shared'
 import { getMemberDashboardData } from './store/dataSlice'
 import {getPositive} from 'services/DashboardService'
@@ -17,7 +16,6 @@ import 'dayjs/locale/ko'
 injectReducer('memberDashboard', reducer)
 
 const Dashboard = () => {
-    const token = SendHeaderCookie(); 
     const dispatch = useDispatch()
 
     let today = new Date();
@@ -32,7 +30,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         fetchData();
-        fetchPositiveData();
+        // fetchPositiveData();
     }, [dispatch])
 
     const fetchData = (selectedDate) => {
@@ -55,21 +53,21 @@ const Dashboard = () => {
     
 
     return (
-        <div className="">
+        <div>
             <Loading loading={loading}>
                 <div className="grid grid-cols-3 gap-4">
                     <AdaptableCard>
-                    <div className="mb-1 font-semibold text-sm">기준일자</div>
-                    <DatePicker
-                        locale="ko"
-                        DatePickerClick={DatePickerClick}
-                        placeholder = {selectDate}
-                        defaultValue={selectDate}
-                    />
+                        <div className="mb-1 font-semibold text-sm">기준일자</div>
+                            <DatePicker
+                                locale="ko"
+                                DatePickerClick={DatePickerClick}
+                                placeholder = {selectDate}
+                                defaultValue={selectDate}
+                            />
                     </AdaptableCard>
                     
                     <div className="col-span-2">
-                        <MemberDashboardHeader data={positive}/>
+                        <MemberDashboardHeader data={defaultData}/>
                     </div>
                 </div>
                 <Statistic data={defaultData} />           
