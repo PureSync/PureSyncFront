@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from 'components/ui';
+import { useSelector, useDispatch } from 'react-redux'
 
 const DepressionResult = () => {
   const navigate = useNavigate();
@@ -8,7 +9,9 @@ const DepressionResult = () => {
   const { state } = location;
 
   const depressionScore = state && state.depressionScore;
-  const memId = state && state.memId;
+  const { avatar, userName, authority, email, nickName } = useSelector(
+    (state) => state.auth.user
+)
 
   const goToMainPage = () => {
     navigate('/home');
@@ -26,7 +29,7 @@ const DepressionResult = () => {
             <div class="card-body h-full">
               <div class=" mb-4">
                 <div className="result-container">
-                  <h4>{memId}님의 우울증 검사 결과</h4>
+                  <h4>{userName}님의 우울증 검사 결과</h4>
                   {depressionScore && <p>당신의 우울증 점수 : {depressionScore}점</p>}<br />
 
                   <p>점수에 따라 자가진단이 가능합니다.</p><br />
