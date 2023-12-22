@@ -1,10 +1,9 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import axios from 'axios';
 import { Button } from 'components/ui';
 import { HiOutlineHeart } from 'react-icons/hi';
 import { useDispatch } from 'react-redux';
-import { setArticle } from 'views/board/EditArticle/store/dataSlice';
-import getHeaderCookie from 'utils/hooks/getHeaderCookie'
+import getHeaderCookie from 'utils/hooks/getHeaderCookie';
 
 const LikeButton = ({ article, isLike }) => {
   const dispatch = useDispatch();
@@ -21,21 +20,21 @@ const LikeButton = ({ article, isLike }) => {
         }
       });
 
-      dispatch(setArticle(response.data.data));
       setLikesCount(response.data.data.findLikes);
       setLiked(response.data.data.findMyLikes == 0);
     } catch (error) {
       console.error('게시물 정보 조회 중 오류:', error);
     }
-  }, [article.boardSeq, dispatch, access_token]);
+  }, [article.boardSeq, access_token]);
 
-  const handleLike = useCallback(async () => {
-    try {
-      await fetchData();
-    } catch (error) {
-      console.error('좋아요 클릭 중 오류:', error);
-    }
+  useEffect(() => {
+    fetchData();
   }, [fetchData]);
+
+  const handleLike = useCallback(() => {
+    setLiked(!liked);
+    setLikesCount(liked ? likesCount - 1 : likesCount + 1);
+  }, [liked, likesCount]);
 
   return (
     <div className="flex items-center gap-1">

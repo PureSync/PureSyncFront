@@ -54,7 +54,7 @@ const ArticleContent = ({ articleId }) => {
 
     const fetchMylikes = async () => {
         await apiGetMyLikes(articleId)
-            .then((res) => {
+            .then((res) => {    
                 setMylikes(res.data.data.findMyLikes);
             })
             .catch(error => { console.log(error) })
