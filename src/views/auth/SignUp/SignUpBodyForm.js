@@ -31,7 +31,9 @@ const SignUpBodyForm = ({ formData, className, signInUrl }) => {
         const finalData = { ...formData, ...values };
         setSubmitting(true);
         try {
-            const response = await Axios.post(process.env.REACT_APP_HOST_URL + '/api/member/signup', finalData);
+
+            const response = await Axios.post(process.env.REACT_APP_HOST_URL+`/api/member/signup`, finalData);
+
             alert("등록하신 이메일로 계정을 활성화 해주세요.");
             window.location.href = signInUrl;
         } catch (e) {
