@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from 'components/ui';
+import { useSelector, useDispatch } from 'react-redux'
 
 const StressResult = () => {
   const navigate = useNavigate();
@@ -9,7 +10,9 @@ const StressResult = () => {
   
   // state가 정의되어 있고 stressScore를 포함하는지 확인
   const stressScore = state && state.stressScore;
-  const memId = state && state.memId;
+  const { avatar, userName, authority, email, nickName } = useSelector(
+    (state) => state.auth.user
+)
 
   const goToMainPage = () => {
     // 메인 페이지로 이동
@@ -29,7 +32,7 @@ const StressResult = () => {
             <div class="card-body h-full">
               <div class=" mb-4">
                 <div className="result-container">
-                  <h4>{memId}님의 스트레스 검사 결과</h4>
+                  <h4>{userName}님의 스트레스 검사 결과</h4>
                   {stressScore && <p>당신의 스트레스 점수 : {stressScore}점</p>}<br />
 
                   {/* 스트레스 점수에 따른 결과 메시지 표시 */}
