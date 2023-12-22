@@ -175,7 +175,7 @@ const SendCompareButtons = React.forwardRef((props, ref) => {
             e.preventDefault()
             return
         }
-        const GET_HTTP = `http://localhost:9000/api/member/check-duplicate/${field}/${inputValue}`
+        const GET_HTTP = `http://localhost:8080/api/member/check-duplicate/${field}/${inputValue}`
         try {
             const response = await Axios.get(GET_HTTP)
             console.log("sendCompareButton" + response.data.message);
