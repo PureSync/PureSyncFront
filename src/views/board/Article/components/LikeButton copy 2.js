@@ -38,7 +38,7 @@
 //       // 각 응답에 대한 추가 작업 수행
 //       dispatch(setArticle(response.data));
 //       console.log(response.data.data.findLikes);
-//       const findLikes = response.data.data.findLikes;
+//       const findLikes = response.data.data.findLikes;ㅁ
 //       setLikesCount(findLikes);
   
 //       console.log(response2.data.data.findMyLikes);
@@ -52,15 +52,27 @@
  
   
 
+// <<<<<<< fix2
+// //   const handleLike = useCallback(async () => {
+// //     try {
+// //       // 서버에 좋아요 요청을 보냄
+// //       await axios.post(`http://localhost:9000/api/board/${article.boardSeq}/likes`, null, {
+// //       headers: {
+// //         'Content-Type': 'application/json',   
+// //         Authorization: `Bearer ${access_token}`
+// //       }
+// //     });
+// =======
 //   const handleLike = useCallback(async () => {
 //     try {
 //       // 서버에 좋아요 요청을 보냄
 //       await axios.post(`http://localhost:9000/api/board/${article.boardSeq}/likes`, null, {
 //       headers: {
-//         'Content-Type': 'application/json',   
+//         'Content-Type': 'application/json',
 //         Authorization: `Bearer ${access_token}`
 //       }
 //     });
+// >>>>>>> dev
 
 //       // 서버에서 좋아요 카운트를 업데이트했다면, 다시 데이터를 불러옴
 //       fetchData();

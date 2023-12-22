@@ -69,8 +69,19 @@
 //     }
 //   }, [article.boardSeq, fetchData]);
 
+// <<<<<<< fix2
+// //   return (
+// //     <div className="flex items-center gap-1">  
+// //       <Button onClick={handleLike} variant="twoTone" icon={<HiOutlineHeart fill={liked ? 'blue' : 'white'} />} size="sm" color="blue-600" >
+// //         좋아요
+// //       </Button>
+// //       <span>{likesCount}</span>
+// //     </div>
+// //   );
+// // };
+// =======
 //   return (
-//     <div className="flex items-center gap-1">  
+//     <div className="flex items-center gap-1">
 //       <Button onClick={handleLike} variant="twoTone" icon={<HiOutlineHeart fill={liked ? 'blue' : 'white'} />} size="sm" color="blue-600" >
 //         좋아요
 //       </Button>
@@ -78,5 +89,6 @@
 //     </div>
 //   );
 // };
+// >>>>>>> dev
 
 // export default React.memo(LikeButton);

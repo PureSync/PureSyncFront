@@ -14,7 +14,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { Button } from 'components/ui'
 import { HiOutlineClock, HiOutlineCog, HiOutlinePencil, HiOutlineInboxIn, HiOutlineTrash, HiOutlineHeart } from 'react-icons/hi'
 import { getboardFile } from 'services/DashboardService'
-
+import LikeButton from './LikeButton'
 import { apiDeleteArticle, apiGetMyLikes } from 'services/BoardService'
 import axios from 'axios'
 
@@ -39,11 +39,11 @@ const ArticleContent = ({ articleId }) => {
 
     useEffect(() => {
         fetchData();
-        // fetchMylikes();
+        fetchMylikes();
 
-        // console.log("================" + mylikes);
+        console.log("================" + mylikes);
         console.log(article);
-    }, [search])
+    }, [search, mylikes])
 
 
     const fetchData = () => {

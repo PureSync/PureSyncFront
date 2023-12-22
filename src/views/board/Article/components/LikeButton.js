@@ -31,10 +31,17 @@
 //     fetchData();
 //   }, [fetchData]);
 
+// <<<<<<< fix2
+// //   const handleLike = useCallback(() => {
+// //     setLiked(!liked);
+// //     setLikesCount(liked ? likesCount - 1 : likesCount + 1);
+// //   }, [liked, likesCount]);  
+// =======
 //   const handleLike = useCallback(() => {
 //     setLiked(!liked);
 //     setLikesCount(liked ? likesCount - 1 : likesCount + 1);
-//   }, [liked, likesCount]);  
+//   }, [liked, likesCount]);
+// >>>>>>> dev
 
 //   return (
 //     <div className="flex items-center gap-1">
