@@ -34,7 +34,7 @@
 //   const handleLike = useCallback(() => {
 //     setLiked(!liked);
 //     setLikesCount(liked ? likesCount - 1 : likesCount + 1);
-//   }, [liked, likesCount]);
+//   }, [liked, likesCount]);  
 
 //   return (
 //     <div className="flex items-center gap-1">

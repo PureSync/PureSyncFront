@@ -70,7 +70,7 @@
 //   }, [article.boardSeq, fetchData]);
 
 //   return (
-//     <div className="flex items-center gap-1">
+//     <div className="flex items-center gap-1">  
 //       <Button onClick={handleLike} variant="twoTone" icon={<HiOutlineHeart fill={liked ? 'blue' : 'white'} />} size="sm" color="blue-600" >
 //         좋아요
 //       </Button>

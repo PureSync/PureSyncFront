@@ -57,7 +57,7 @@
 //       // 서버에 좋아요 요청을 보냄
 //       await axios.post(`http://localhost:9000/api/board/${article.boardSeq}/likes`, null, {
 //       headers: {
-//         'Content-Type': 'application/json',
+//         'Content-Type': 'application/json',   
 //         Authorization: `Bearer ${access_token}`
 //       }
 //     });

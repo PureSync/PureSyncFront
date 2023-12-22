@@ -112,7 +112,7 @@ const ArticleContent = ({ articleId }) => {
             <div className="flex items-center justify-between">
                 <h3>{article.boardName}</h3>
                 <div className="gap-2 flex">
-                    {/* <LikeButton article={article} fetchData={fetchData} isLike={mylikes} /> */}
+                    {/* <LikeButton article={article} fetchData={fetchData} isLike={mylikes} /22> */}
                     {/* <Button onClick={handleLike} variant="twoTone" icon={<HiOutlineHeart fill={article.boardLikescount ? 'blue' : 'white'} />}
                      size="sm" color="blue-600" >좋아요</Button> */}
                     {article.memId === userName && (
