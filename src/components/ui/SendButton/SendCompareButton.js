@@ -170,12 +170,12 @@ const SendCompareButtons = React.forwardRef((props, ref) => {
         const { onClick, field, inputValue, onDuplicateCheck, setFieldError } = props
         console.log("handleClick filed::::" + field);
         console.log("handleClick inputValue:::" + inputValue);
-
+        const GET_HTTP = process.env.REACT_APP_HOST_URL + `/api/member/check-duplicate/${field}/${inputValue}`
+        console.log("handleClick GET_HTTP::::::::::::"+ GET_HTTP);
         if (disabled || loading) {
             e.preventDefault()
             return
         }
-        const GET_HTTP = `http://localhost:8080/api/member/check-duplicate/${field}/${inputValue}`
         try {
             const response = await Axios.get(GET_HTTP)
             console.log("sendCompareButton" + response.data.message);
