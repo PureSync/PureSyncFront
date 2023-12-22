@@ -32,7 +32,7 @@ const Test = () => {
                 });
 
                 const stressTotalScore = stressResponse.data.data.allStressAnswer ? stressResponse.data.data.allStressAnswer.total : null;
-                
+
                 setStressScore(stressTotalScore);
 
                 // Depression API 호출
@@ -41,7 +41,7 @@ const Test = () => {
                         Authorization: `Bearer ${access_token}`
                     }
                 });
-                const depressionTotalScore = depressionResponse.data.data.allDepressionAnswer ? depressionResponse.data.data.allDepressionAnswer.total : null ;
+                const depressionTotalScore = depressionResponse.data.data.allDepressionAnswer ? depressionResponse.data.data.allDepressionAnswer.total : null;
                 setDepressionScore(depressionTotalScore);
                 setLoading(false);
             } catch (error) {
@@ -54,49 +54,49 @@ const Test = () => {
 
     const handleCardClick = (option) => {
         navigate(`/mind/test/${option.value}`);
-      };
+    };
 
     const cardHeader = (
         <div className="rounded-tl-lg rounded-tr-lg overflow-hidden">
             <img src="/img/others/img-1.jpg" alt="card header" />
         </div>
     )
-    
+
     return (
         <div>
             <h3 className="mb-8">심리 검사</h3>
             <Loading loading={loading}>
-            <div className="grid grid-cols-3 gap-4">
-                {testOptions.map((option, index) => (
-                    <div className="max-w-xs">
-                        <Card key={index}
-                            clickable
-                            className="hover:shadow-lg transition duration-150 ease-in-out dark:border dark:border-gray-600 dark:border-solid"
-                            header={cardHeader}
-                            headerClass="p-0"
-                            footerBorder={false}
-                            headerBorder={false}
-                            onClick={() => handleCardClick(option)}
-                        >
-                            <div style={{'min-height' : '130px'}}>
-                            <span className="text-emerald-600 font-semibold">
-                                [{option.value}]
-                            </span>
-                            <h4 className="font-bold my-2">{option.label}</h4>
-                            <p>
-                                {option.value === 'stress' && stressScore !== null ? (
-                                    <p>이전 검사 결과 : {stressScore}점</p>
-                                ) : option.value === 'depression' && depressionScore !== null ? (
-                                    <p>이전 검사 결과 : {depressionScore}점</p>
-                                ) : (
-                                    <p>아직 참여하지 않으셨네요. 내 마음을 진단해보세요!</p>
-                                )}
-                            </p>
-                            </div>
-                        </Card>
-                    </div>
-                ))}
-            </div>
+                <div className="grid grid-cols-3 gap-4">
+                    {testOptions.map((option, index) => (
+                        <div className="max-w-xs">
+                            <Card key={index}
+                                clickable
+                                className="hover:shadow-lg transition duration-150 ease-in-out dark:border dark:border-gray-600 dark:border-solid"
+                                header={cardHeader}
+                                headerClass="p-0"
+                                footerBorder={false}
+                                headerBorder={false}
+                                onClick={() => handleCardClick(option)}
+                            >
+                                <div style={{ 'minHeight': '130px' }}>
+                                    <span className="text-emerald-600 font-semibold">
+                                        [{option.value}]
+                                    </span>
+                                    <h4 className="font-bold my-2">{option.label}</h4>
+                                    <>
+                                        {option.value === 'stress' && stressScore !== null ? (
+                                            <p>이전 검사 결과 : {stressScore}점</p>
+                                        ) : option.value === 'depression' && depressionScore !== null ? (
+                                            <p>이전 검사 결과 : {depressionScore}점</p>
+                                        ) : (
+                                            <p>아직 참여하지 않으셨네요. 내 마음을 진단해보세요!</p>
+                                        )}
+                                    </>
+                                </div>
+                            </Card>
+                        </div>
+                    ))}
+                </div>
             </Loading>
         </div>
     );

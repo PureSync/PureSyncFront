@@ -19,14 +19,14 @@ const Logo = (props) => {
                 ...{ width: logoWidth }
             }}
         >
-            <ActionLink to="/home">
+            {/* <ActionLink to="/home"> */}
             <img
                 className={imgClass}
                 src={`${LOGO_SRC_PATH}logo-${mode}-${type}.png`}
                 alt={`${APP_NAME} logo`}
                 style={{maxWidth : "200px"}}
             />
-            </ActionLink>
+            {/* </ActionLink> */}
         </div>
     )
 }

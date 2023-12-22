@@ -26,8 +26,6 @@ const SleepCalendar = () => {
         events = [];
     else 
         events = events.sleepList;
-    console.log("************************");
-    console.log(events);
     
     useEffect(() => {
         dispatch(getEvents())
@@ -48,9 +46,7 @@ const SleepCalendar = () => {
     }
 
     const onEventClick = (arg) => {
-        console.log( "@@@@@@@@@@@@@", arg.event );
         const { start, end, id, title, extendedProps, sleepGodate, sleepWudate } = arg.event
-        console.log( sleepGodate , sleepWudate, start, end );
         dispatch(
             setSelected({
                 type: 'EDIT',
@@ -94,7 +90,6 @@ const SleepCalendar = () => {
     }
 
     const onEventChange = (arg) => {
-        console.log( "**** arg : " , arg );
         const newEvents = cloneDeep(events).map((event) => {
             if (arg.event.id === event.id) {
                 const { id, extendedProps, start, end, title} = arg.event
@@ -108,7 +103,6 @@ const SleepCalendar = () => {
                     eventColor: extendedProps.eventColor,
                 }
 
-                console.log( "!!!!!!!!!!!!!!!!!!!!!!!!!", event);
             }
             return event
         })

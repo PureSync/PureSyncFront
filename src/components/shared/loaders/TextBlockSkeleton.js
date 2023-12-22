@@ -15,7 +15,7 @@ const TextBlockSkeleton = (props) => {
                     <Skeleton
                         key={row}
                         height={height}
-                        width={index === rowCount - 1 && lastChildWidth}
+                        width={index === rowCount - 1 ? lastChildWidth : `100%`}
                     />
                 )
             )}
