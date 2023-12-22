@@ -17,9 +17,8 @@ const validationSchema = Yup.object().shape({
     oldPassword: Yup.string().required('현재 비밀번호를 입력하세요.'),
     newPassword: Yup.string()
         .required('신규 비밀번호를 입력하세요.')
-        .min(8, '8자 이상의 영문, 숫자, 특수문자로 입력해주세요.')
-        .max(17, '16자 이하의 영문, 숫자, 특수문자로 입력해주세요.')
-        .matches(/^[A-Za-z0-9_-]*$/, '비밀번호 생성규칙에 알맞지 않습니다.'),
+        .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, '영문, 숫자, 특수문자를 조합하여 입력해주세요.')
+        .min(8, '8자 이상의 영문, 숫자, 특수문자로 입력해주세요.'),
     confirmNewPassword: Yup.string().oneOf(
         [Yup.ref('newPassword'), null],
         '비밀번호가 일치하지 않습니다.'
