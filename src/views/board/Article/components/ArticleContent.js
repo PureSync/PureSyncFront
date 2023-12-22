@@ -14,7 +14,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { Button } from 'components/ui'
 import { HiOutlineClock, HiOutlineCog, HiOutlinePencil, HiOutlineInboxIn, HiOutlineTrash, HiOutlineHeart } from 'react-icons/hi'
 import { getboardFile } from 'services/DashboardService'
-import LikeButton from './LikeButton'
+
 import { apiDeleteArticle, apiGetMyLikes } from 'services/BoardService'
 import axios from 'axios'
 
@@ -39,11 +39,11 @@ const ArticleContent = ({ articleId }) => {
 
     useEffect(() => {
         fetchData();
-        fetchMylikes();
+        // fetchMylikes();
 
-        console.log("================" + mylikes);
+        // console.log("================" + mylikes);
         console.log(article);
-    }, [search, mylikes])
+    }, [search])
 
 
     const fetchData = () => {
@@ -112,7 +112,7 @@ const ArticleContent = ({ articleId }) => {
             <div className="flex items-center justify-between">
                 <h3>{article.boardName}</h3>
                 <div className="gap-2 flex">
-                    <LikeButton article={article} fetchData={fetchData} isLike={mylikes} />
+                    {/* <LikeButton article={article} fetchData={fetchData} isLike={mylikes} /> */}
                     {/* <Button onClick={handleLike} variant="twoTone" icon={<HiOutlineHeart fill={article.boardLikescount ? 'blue' : 'white'} />}
                      size="sm" color="blue-600" >좋아요</Button> */}
                     {article.memId === userName && (
