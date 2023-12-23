@@ -34,7 +34,7 @@ const Editor = () => {
                 // console.log(fileObjects)
             }
         };
-    
+
         fetchData();
     }, [updateData]);
 
@@ -121,25 +121,29 @@ const Editor = () => {
             console.log(key, formData.get(key));
         }
 
+        const confirmationMessage = updateData
+            ? '게시글을 수정하시겠습니까?'
+            : '게시글을 등록하시겠습니까?';
 
-        if (updateData == null) {
-            await apiPostArticle(formData)
-                .then((res) => {
+        const shouldSubmit = window.confirm(confirmationMessage);
+
+        if (shouldSubmit) {
+            try {
+                if (updateData == null) {
+                    const res = await apiPostArticle(formData)
                     console.log('파일 업로드 성공:', res.data);
-                    alert('게시글이 작성되었습니다.');
+                    // alert('게시글이 작성되었습니다.');
                     navigate(`/qnaboard/view?id=${res.data.data.qnaBoard.qnaBoardSeq}`);
-                })
-                .catch((error) => { console.log(error) })
-
-        } else {
-            console.log(updateData);
-            await apiPutArticle(updateData.articleId, formData)
-                .then((res) => {
+                } else {
+                    console.log(updateData);
+                    const res = await apiPutArticle(updateData.articleId, formData)
                     console.log('파일 업로드 성공:', res.data);
-                    alert('게시글이 수정되었습니다.');
+                    // alert('게시글이 수정되었습니다.');
                     navigate(`/qnaboard/view?id=${updateData.articleId}`);
-                })
-                .catch((error) => { console.log(error) })
+                }
+            } catch (error) {
+                console.log(error);
+            }
         }
 
         setSubmitting(false);
@@ -149,7 +153,7 @@ const Editor = () => {
         <Formik
             initialValues={{
                 qnaBoardName: updateData ? updateData.qnaBoardName : '',
-                qnaBoardContents: updateData ? updateData.qnaBoardContents : '',
+                qnaBoardContents: updateData && updateData.qnaBoardContents ? updateData.qnaBoardContents : '',
                 file: updateData && updateData.qnaBoardFile ? initFile : [],
                 // file: [],
             }}
