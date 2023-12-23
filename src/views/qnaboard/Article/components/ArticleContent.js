@@ -70,11 +70,16 @@ const ArticleContent = ({ articleId }) => {
             console.error('게시물 boardSeq를 찾을 수 없습니다.');
             return;
         }
-        await apiDeleteArticle(article.qnaBoardSeq)
-            .then((res) => {
-                navigate('/qnaboard');
-            })
 
+        const confirmationMessage = '게시글을 삭제하시겠습니까?';
+        const shouldDelete = window.confirm(confirmationMessage);
+
+        if (shouldDelete) {
+            await apiDeleteArticle(article.qnaBoardSeq)
+                .then((res) => {
+                    navigate('/qnaboard');
+                })
+        }
     };
 
     const commentRegister = () => {
