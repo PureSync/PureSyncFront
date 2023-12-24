@@ -132,13 +132,11 @@ const Editor = () => {
                 if (updateData == null) {
                     const res = await apiPostArticle(formData)
                     console.log('파일 업로드 성공:', res.data);
-                    // alert('게시글이 작성되었습니다.');
                     navigate(`/qnaboard/view?id=${res.data.data.qnaBoard.qnaBoardSeq}`);
                 } else {
                     console.log(updateData);
                     const res = await apiPutArticle(updateData.articleId, formData)
                     console.log('파일 업로드 성공:', res.data);
-                    // alert('게시글이 수정되었습니다.');
                     navigate(`/qnaboard/view?id=${updateData.articleId}`);
                 }
             } catch (error) {
