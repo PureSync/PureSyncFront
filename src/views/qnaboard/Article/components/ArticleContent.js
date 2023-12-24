@@ -53,9 +53,9 @@ const ArticleContent = ({ articleId }) => {
         // 필요한 데이터를 객체로 만들어 전달
         const updateData = {
             articleId: article.qnaBoardSeq,
-            boardName: article.qnaBoardName,
-            boardContents: article.qnaBoardContents,
-            boardFile: article.qnaBoardFile
+            qnaBoardName: article.qnaBoardName,
+            qnaBoardContents: article.qnaBoardContents,
+            qnaBoardFile: article.qnaBoardFile
 
         };
 

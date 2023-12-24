@@ -43,7 +43,7 @@ const ArticleContent = ({ articleId }) => {
 
         console.log("================" + mylikes);
         console.log(article);
-    }, [search, mylikes])
+    }, [search]) // mylikes 때문에 무한 리로드
 
 
     const fetchData = () => {
@@ -54,7 +54,7 @@ const ArticleContent = ({ articleId }) => {
 
     const fetchMylikes = async () => {
         await apiGetMyLikes(articleId)
-            .then((res) => {    
+            .then((res) => {
                 setMylikes(res.data.data.findMyLikes);
             })
             .catch(error => { console.log(error) })
@@ -81,11 +81,16 @@ const ArticleContent = ({ articleId }) => {
             console.error('게시물 boardSeq를 찾을 수 없습니다.');
             return;
         }
-        await apiDeleteArticle(article.boardSeq)
-            .then((res) => {
-                navigate('/board');
-            })
-            
+
+        const confirmationMessage = '게시글을 삭제하시겠습니까?';
+        const shouldDelete = window.confirm(confirmationMessage);
+
+        if (shouldDelete) {
+            await apiDeleteArticle(article.boardSeq)
+                .then((res) => {
+                    navigate('/board');
+                })
+        }
     };
 
     const commentRegister = () => {
@@ -164,9 +169,6 @@ const ArticleContent = ({ articleId }) => {
                             : null
                     }
                 </div>
-
-
-
             </div>
 
             <ArticleAction data={article.boardSeq} commentRegister={commentRegister} />
