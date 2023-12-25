@@ -17,7 +17,7 @@ const BoardListHeader = () => {
                         <span className='text-emerald-600 dark:text-emerald-100'>
                             <HiExclamationCircle />
                         </span>
-                        <span className='font-semibold text-emerald-600' >상대방을 비하하는 글은 관리자에 의해 삭제될 수 있습니다.</span>
+                        <span className='font-semibold text-emerald-600' >문의 관련 답변은 관리자의 댓글을 통해 확인하실 수 있습니다.</span>
                     </span>
                 </div>
             </div>
