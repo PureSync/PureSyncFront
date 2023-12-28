@@ -214,7 +214,7 @@ const Editor = () => {
 
                         <div className="mt-4 flex justify-end">
                             <Button loading={isSubmitting} variant="solid" type="submit">
-                                등록
+                                등록?
                             </Button>
                         </div>
                     </FormContainer>
