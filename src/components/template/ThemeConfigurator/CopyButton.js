@@ -31,7 +31,7 @@ const CopyButton = () => {
 
     return (
         <Button block variant="solid" onClick={handleCopy}>
-            Copy config
+            저장
         </Button>
     )
 }

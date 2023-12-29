@@ -16,6 +16,7 @@ import navigationConfig from 'configs/navigation.config'
 import VerticalMenuContent from 'components/template/VerticalMenuContent'
 import useResponsive from 'utils/hooks/useResponsive'
 import { useSelector } from 'react-redux'
+import ActionLink from 'components/shared/ActionLink'
 
 const sideNavStyle = {
     width: SIDE_NAV_WIDTH,
@@ -89,15 +90,17 @@ const SideNav = () => {
                     )}
                 >
                     <div className="side-nav-header">
-                        <Logo
-                            mode={logoMode()}
-                            type={sideNavCollapse ? 'streamline' : 'full'}
-                            gutter={
-                                sideNavCollapse
-                                    ? SIDE_NAV_CONTENT_GUTTER
-                                    : LOGO_X_GUTTER
-                            }
-                        />
+                        <ActionLink to="/home">
+                            <Logo
+                                mode={logoMode()}
+                                type={sideNavCollapse ? 'streamline' : 'full'}
+                                gutter={
+                                    sideNavCollapse
+                                        ? SIDE_NAV_CONTENT_GUTTER
+                                        : LOGO_X_GUTTER
+                                }
+                            />
+                        </ActionLink>
                     </div>
                     {sideNavCollapse ? (
                         menuContent

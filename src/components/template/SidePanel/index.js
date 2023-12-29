@@ -38,7 +38,7 @@ export const SidePanel = (props) => {
                 <HiOutlineCog />
             </div>
             <Drawer
-                title="Theme Config"
+                title="테마 설정"
                 isOpen={panelExpand}
                 onClose={closePanel}
                 onRequestClose={closePanel}

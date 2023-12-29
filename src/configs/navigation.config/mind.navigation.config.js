@@ -1,17 +1,13 @@
-import { PAGES_PREFIX_PATH } from 'constants/route.constant'
-import {
-    NAV_ITEM_TYPE_TITLE,
-    NAV_ITEM_TYPE_ITEM,
-} from 'constants/navigation.constant'
+import { NAV_ITEM_TYPE_TITLE, NAV_ITEM_TYPE_ITEM } from 'constants/navigation.constant'
 import { USER } from 'constants/roles.constant'
 
 const mindNavigationConfig = [
     {
         key: 'pages',
         path: '',
-        title: 'PAGES',
+        title: '마음',
         translateKey: 'nav.pages.pages',
-        icon: 'pages',
+        icon: 'heart',
         type: NAV_ITEM_TYPE_TITLE,
         authority: [USER],
         subMenu: [
