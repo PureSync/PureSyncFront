@@ -18,7 +18,7 @@ const dropdownItemList = [
 ]
 
 export const UserDropdown = ({ className }) => {
-    const { avatar, userName, authority, email } = useSelector(
+    const { avatar, userName, email } = useSelector(
         (state) => state.auth.user
     )
 
@@ -38,7 +38,6 @@ export const UserDropdown = ({ className }) => {
         </div>
     )
 
-    //  회원 프로필 수정되면 Avatar에 src={avatar} 추가
     return (
         <div>
             <Dropdown
@@ -48,9 +47,9 @@ export const UserDropdown = ({ className }) => {
             >
                 <Dropdown.Item variant="header">
                     <div className="py-2 px-3 flex items-center gap-2">
-                    {avatar == undefined ? 
-                        <Avatar size={32} shape="circle" icon={<HiOutlineUser />}/>:
-                        <Avatar size={32} shape="circle" src={AWS_IMG_PATH + avatar} />
+                    {avatar ? 
+                        <Avatar size={32} shape="circle" src={AWS_IMG_PATH + avatar} />:
+                        <Avatar size={32} shape="circle" icon={<HiOutlineUser />}/>
                     }
                         <div>
                             <div className="font-bold text-gray-900 dark:text-gray-100">

@@ -1,18 +1,13 @@
-import { UI_COMPONENTS_PREFIX_PATH } from 'constants/route.constant'
-import {
-    NAV_ITEM_TYPE_TITLE,
-    NAV_ITEM_TYPE_COLLAPSE,
-    NAV_ITEM_TYPE_ITEM,
-} from 'constants/navigation.constant'
+import { NAV_ITEM_TYPE_TITLE, NAV_ITEM_TYPE_ITEM } from 'constants/navigation.constant'
 import { USER } from 'constants/roles.constant'
 
 const bodyNavigationConfig = [
     {
         key: 'uiComponent',
         path: '',
-        title: 'Ui Component',
+        title: '신체',
         translateKey: 'nav.uiComponents',
-        icon: 'uiComponents',
+        icon: 'food',
         type: NAV_ITEM_TYPE_TITLE,
         authority: [USER],
         subMenu: [
@@ -35,7 +30,7 @@ const bodyNavigationConfig = [
                 type: NAV_ITEM_TYPE_ITEM,
                 authority: [USER],
                 subMenu: [],
-            }
+            },
         ],
     },
 ]

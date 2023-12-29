@@ -1,18 +1,13 @@
-import { AUTH_PREFIX_PATH } from 'constants/route.constant'
-import {
-    NAV_ITEM_TYPE_TITLE,
-    NAV_ITEM_TYPE_COLLAPSE,
-    NAV_ITEM_TYPE_ITEM,
-} from 'constants/navigation.constant'
+import { NAV_ITEM_TYPE_TITLE, NAV_ITEM_TYPE_ITEM } from 'constants/navigation.constant'
 import { USER } from 'constants/roles.constant'
 
 const boardNavigationConfig = [
     {
         key: 'authentication',
         path: '',
-        title: 'AUTHENTICATION',
+        title: '게시판',
         translateKey: 'nav.authentication.authentication',
-        icon: 'authentication',
+        icon: 'board',
         type: NAV_ITEM_TYPE_TITLE,
         authority: [USER],
         subMenu: [
@@ -35,8 +30,7 @@ const boardNavigationConfig = [
                 type: NAV_ITEM_TYPE_ITEM,
                 authority: [USER],
                 subMenu: [],
-            }
-
+            },
         ],
     },
 ]
