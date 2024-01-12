@@ -21,7 +21,7 @@ export async function apiGetAllMenu(params) {
 export async function apiDeleteMenu(data) {
     return ApiService.fetchData({
         url: process.env.REACT_APP_HOST_URL + '/api/menu/delete',
-        method: 'post',
+        method: 'delete',
         data: data,
     })
 }
@@ -55,7 +55,7 @@ export async function apiGetAllExercise(params) {
 export async function apiDeleteExercise(data) {
     return ApiService.fetchData({
         url: process.env.REACT_APP_HOST_URL + '/api/exercise/delete',
-        method: 'post',
+        method: 'delete',
         data: data,
     })
 }
